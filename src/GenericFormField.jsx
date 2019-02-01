@@ -302,9 +302,7 @@ export const GenericFormFieldShape = {
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     type: PropTypes.string,
-    dataType: PropTypes.oneOf(
-        Object.keys(GenericFormFieldDataTypes).map(key => GenericFormFieldDataTypes[key])
-    ),
+    dataType: PropTypes.string,
     validation: PropTypes.shape(validationShape),
     value: PropTypes.any,
     labelAsDefault: PropTypes.bool,
