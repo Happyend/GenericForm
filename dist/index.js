@@ -541,12 +541,8 @@
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
-    type: PropTypes.oneOf(Object.keys(GenericFormFieldTypes).map(function (key) {
-      return GenericFormFieldTypes[key];
-    })).ismandatory,
-    dataType: PropTypes.oneOf(Object.keys(GenericFormFieldDataTypes).map(function (key) {
-      return GenericFormFieldDataTypes[key];
-    })),
+    type: PropTypes.string,
+    dataType: PropTypes.string,
     validation: PropTypes.shape(validationShape),
     value: PropTypes.any,
     labelAsDefault: PropTypes.bool,
