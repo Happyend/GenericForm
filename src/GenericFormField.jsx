@@ -301,9 +301,7 @@ export const GenericFormFieldShape = {
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
-    type: PropTypes.oneOf(
-        Object.keys(GenericFormFieldTypes).map(key => GenericFormFieldTypes[key])
-    ).ismandatory,
+    type: PropTypes.string,
     dataType: PropTypes.oneOf(
         Object.keys(GenericFormFieldDataTypes).map(key => GenericFormFieldDataTypes[key])
     ),
