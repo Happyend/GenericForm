@@ -241,7 +241,8 @@
       _this.state = {
         error: _this.props.error,
         isFocused: false,
-        value: props.defaultValue || props.value || ''
+        value: props.defaultValue || props.value || '',
+        showError: false
       };
       if (isRadioOrCheckbox(_this.props)) _this.state.checked = _this.props.checked || false;
       _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -270,13 +271,6 @@
       key: "componentWillUnmount",
       value: function componentWillUnmount() {
         if (this.props.type !== GenericFormFieldTypes.SUBMIT) GenericFormField.unregisterField(this.props.formId, this);
-      }
-    }, {
-      key: "setError",
-      value: function setError(message) {
-        this.setState({
-          error: message
-        });
       }
     }, {
       key: "getClassName",
@@ -319,6 +313,7 @@
       key: "renderGenericFormField",
       value: function renderGenericFormField() {
         var _this$props = this.props,
+            dataType = _this$props.dataType,
             label = _this$props.label,
             labelAsDefault = _this$props.labelAsDefault,
             options = _this$props.options,
@@ -331,7 +326,7 @@
             after = _this$props.after,
             validation = _this$props.validation,
             formId = _this$props.formId,
-            nativeProps = _objectWithoutProperties(_this$props, ["label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId"]);
+            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId"]);
 
         var props = _objectSpread({
           value: this.state.value,
@@ -391,9 +386,9 @@
           stateUpdate.value = e.target.value;
         }
 
-        this.setState(stateUpdate, function () {
+        this.setState(stateUpdate, this.state.showError ? function () {
           return _this2.validate();
-        });
+        } : null);
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
       }
     }, {
@@ -409,7 +404,8 @@
       value: function onBlur(e) {
         this.setState({
           isFocused: false,
-          error: this.getError()
+          error: this.getError(),
+          showError: true
         });
         if (typeof this.props.onBlur === 'function') this.props.onBlur(e);
       }
@@ -466,16 +462,16 @@
 
           if (this.props.validation.negativeRegex) {
             for (var key in this.props.validation.negativeRegex) {
-              if (!regexMatches(value, key)) {
-                return this.props.validation.negativeRegex[key];
+              if (!regexMatches(value, this.props.validation.negativeRegex[key])) {
+                return key;
               }
             }
           }
 
           if (this.props.validation.positiveRegex) {
             for (var _key in this.props.validation.positiveRegex) {
-              if (regexMatches(value, _key)) {
-                return this.props.validation.positiveRegex[_key];
+              if (regexMatches(value, this.props.validation.positiveRegex[_key])) {
+                return _key;
               }
             }
           }
@@ -488,11 +484,15 @@
       value: function validate() {
         if (this.props.validation) {
           var error = this.getError();
-
-          if (error) {
-            this.setError(error);
-            return false;
-          }
+          this.setState({
+            error: error,
+            showError: true
+          });
+          if (error) return false;
+        } else {
+          this.setState({
+            showError: true
+          });
         }
 
         return true;

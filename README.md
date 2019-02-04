@@ -79,7 +79,7 @@ The positiveRegex prop allows you to define props that will trigger errors when 
 <GenericFormField
     validation={ {
         positiveRegex: {
-        [/,/]: 'No commas are allowed'
+        'No commas are allowed': /,/
         }
     } } />
 ```
@@ -91,7 +91,7 @@ The negativeRegex prop allows you to define props that will trigger errors when 
 <GenericFormField
     validation={ {
         negativeRegex: {
-        [/,/]: 'The field must contain a comma'
+        'The field must contain a comma': /,/
         }
     } } />
 ```

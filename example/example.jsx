@@ -78,6 +78,18 @@ const App = () =>
                         'Commas are not allowed': ','
                     }
                 } } />
+            <p>Field with mandatory comma</p>
+            <GenericFormField
+                formId="test"
+                type={GenericFormFieldTypes.TEXT}
+                id="test-address-field" name={"address"}
+                label="Address"
+                validation={ {
+                    mandatory: true,
+                    negativeRegex: {
+                        'Field must contain a comma': ','
+                    }
+                } } />
             <GenericFormField type={GenericFormFieldTypes.SUBMIT} value="Send"/>
         </GenericForm>
     </div>;

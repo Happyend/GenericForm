@@ -15,7 +15,8 @@ class GenericFormField extends React.Component {
         this.state = {
             error: this.props.error,
             isFocused: false,
-            value: props.defaultValue || props.value || ''
+            value: props.defaultValue || props.value || '',
+            showError: false
         };
 
         if (isRadioOrCheckbox(this.props))
@@ -52,12 +53,6 @@ class GenericFormField extends React.Component {
     componentWillUnmount() {
         if (this.props.type !== GenericFormFieldTypes.SUBMIT)
             GenericFormField.unregisterField(this.props.formId, this);
-    }
-
-    setError(message) {
-        this.setState({
-            error: message
-        });
     }
 
     getClassName() {
@@ -167,7 +162,13 @@ class GenericFormField extends React.Component {
         } else {
             stateUpdate.value = e.target.value;
         }
-        this.setState(stateUpdate, () => this.validate());
+
+        this.setState(
+            stateUpdate,
+            this.state.showError
+                ? () => this.validate()
+                : null
+        );
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
     }
 
@@ -181,7 +182,8 @@ class GenericFormField extends React.Component {
     onBlur(e) {
         this.setState({
             isFocused: false,
-            error: this.getError()
+            error: this.getError(),
+            showError: true
         });
         if (typeof this.props.onBlur === 'function') this.props.onBlur(e);
     }
@@ -254,12 +256,17 @@ class GenericFormField extends React.Component {
     validate() {
         if (this.props.validation) {
             const error = this.getError();
-            if (error) {
-                this.setError(error);
+            this.setState({
+                error,
+                showError: true
+            });
+
+            if (error)
                 return false;
-            } else {
-                this.setError(null);
-            }
+        } else {
+            this.setState({
+                showError: true
+            });
         }
         return true;
     }
