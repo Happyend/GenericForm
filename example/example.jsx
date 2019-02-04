@@ -74,8 +74,8 @@ const App = () =>
                 label="Address"
                 validation={ {
                     mandatory: true,
-                    regex: {
-                        '^((?!\,).)*$': 'Commas are not allowed'
+                    positiveRegex: {
+                        'Commas are not allowed': ','
                     }
                 } } />
             <GenericFormField type={GenericFormFieldTypes.SUBMIT} value="Send"/>

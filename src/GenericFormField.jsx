@@ -102,6 +102,7 @@ class GenericFormField extends React.Component {
     renderGenericFormField() {
 
         const {
+            dataType,
             label,
             labelAsDefault,
             options,
@@ -232,16 +233,16 @@ class GenericFormField extends React.Component {
 
             if (this.props.validation.negativeRegex) {
                 for (let key in this.props.validation.negativeRegex) {
-                    if (!regexMatches(value, key)) {
-                        return this.props.validation.negativeRegex[key];
+                    if (!regexMatches(value, this.props.validation.negativeRegex[key])) {
+                        return key;
                     }
                 }
             }
 
             if (this.props.validation.positiveRegex) {
                 for (let key in this.props.validation.positiveRegex) {
-                    if (regexMatches(value, key)) {
-                        return this.props.validation.positiveRegex[key];
+                    if (regexMatches(value, this.props.validation.positiveRegex[key])) {
+                        return key;
                     }
                 }
             }
@@ -256,6 +257,8 @@ class GenericFormField extends React.Component {
             if (error) {
                 this.setError(error);
                 return false;
+            } else {
+                this.setError(null);
             }
         }
         return true;
@@ -283,7 +286,6 @@ class GenericFormField extends React.Component {
     }
 
 }
-
 
 const validationShape = {
     mandatory: PropTypes.bool,
