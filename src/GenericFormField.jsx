@@ -114,12 +114,12 @@ class GenericFormField extends React.Component {
         } = this.props;
 
         const props = {
+          ...nativeProps,
             value: this.state.value,
             onChange: this.onChange,
             onFocus: this.onFocus,
             onBlur: this.onBlur,
             ref: this.el,
-            ...nativeProps
         };
 
         if (_extraTypes[type]) {
@@ -160,7 +160,7 @@ class GenericFormField extends React.Component {
         if (isRadioOrCheckbox(this.props)) {
             stateUpdate.checked = !this.state.checked;
         } else {
-            stateUpdate.value = e.target.value;
+            stateUpdate.value = this.getValue();
         }
 
         this.setState(
