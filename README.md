@@ -115,6 +115,51 @@ the groupError prop
     } } />
 ```
 
+## Using external libraries
+
+The package supports external library components through the GenericFormField static method 'registerExtraType'.
+### registerExtraType arguments
+
+#### type (string)
+A string to identify the new GenericFormField type
+
+#### customComponent methods (object)
+An object that has two methods, render and getValue:
+##### render(libraryProps, componentProps, libraryState)
+The render method should return the custom component.
+##### getValue
+A method scoped to the component that allows access to component props and should return the component value.
+
+### registerExtraType example
+
+Here is an example of how to register a custom component into the form validation using
+the react-text-mask plugin.
+
+```
+GenericFormField.registerExtraType('mask', {
+  render(sharedProps, { mask }) {
+
+    return <TextMask
+      { ...sharedProps }
+      mask={ mask }
+      guide={ false }
+      type='text'/>;
+
+  },
+  getValue() {
+    return this.el.current.inputElement.value;
+  },
+});
+```
+By registering an extra type you may then use the component in your forms by simply using the string you registered:
+```
+<GenericFormField
+    id='masked-field'
+    name='masked-field'
+    type='mask'
+    mask={[/\d/, /\d/, /\d/, /\d/,'-', /\d/, /\d/]} />
+```
+
 
 ## Scripts
 
