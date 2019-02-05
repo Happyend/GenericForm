@@ -50,16 +50,19 @@ into the form by specifying the formId prop.
 ```jsx
 <GenericForm id="my-form">
     <GenericFormField 
+        formId="my-form"
         type={GenericFormFieldType.EMAIL} 
         name="email" 
         id="my-form-email"
         validation={{ mandatory: true}} />
     <GenericFormField 
+        formId="my-form"
         type={GenericFormFieldType.PASSWORD} 
         name="password" 
         id="my-form-password"
         validation={{ mandatory: true}} />
     <GenericFormField 
+        formId="my-form"
         type={GenericFormFieldType.SUBMIT} 
         value="Login" />
 </GenericForm>
