@@ -66,6 +66,20 @@ const App = () =>
                 dataType: GenericFormFieldDataTypes.BOOL
             }
         ]}>
+            <p>Optional checkboxes</p>
+            <GenericFormField
+                formId="test"
+                type={GenericFormFieldTypes.CHECKBOX}
+                id="test-c1-field"
+                label="C1"
+                value={"c1"}
+                name="c1" />
+            <GenericFormField
+                formId="test"
+                type={GenericFormFieldTypes.CHECKBOX}
+                id="test-c2-field"
+                label="C2"
+                name="c2" />
             <p>Field with forbidden value ','</p>
             <GenericFormField
                 formId="test"

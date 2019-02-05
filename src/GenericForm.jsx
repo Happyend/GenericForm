@@ -52,7 +52,8 @@ class GenericForm extends React.Component {
 
         for(let key in checkboxes) {
             checkboxes[key] = checkboxes[key].filter(val => !!val);
-            if (!key.endsWith('[]') && checkboxes[key].length === 1) {
+            if (!checkboxes[key].length) checkboxes[key] = false;
+            else if (!key.endsWith('[]') && checkboxes[key].length === 1) {
                 checkboxes[key] = checkboxes[key][0];
             }
         }

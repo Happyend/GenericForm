@@ -242,7 +242,8 @@
         error: _this.props.error,
         isFocused: false,
         value: props.defaultValue || props.value || '',
-        showError: false
+        showError: false,
+        showGroupError: false
       };
       if (isRadioOrCheckbox(_this.props)) _this.state.checked = _this.props.checked || false;
       _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -294,7 +295,7 @@
         }
 
         if (this.props.break) className += 'break ';
-        if (this.state.error) className += 'has-error ';
+        if (this.state.error || this.state.showGroupError) className += 'has-error ';
         return className;
       }
     }, {
@@ -305,9 +306,7 @@
           className: this.getClassName()
         }, React.createElement(GenericFormFieldLabel, _extends({}, this.props, {
           value: this.state.value
-        })), this.renderGenericFormField(), this.state.error && React.createElement("div", {
-          className: "generic-form-error"
-        }, this.state.error), this.props.after);
+        })), this.renderGenericFormField(), this.renderError(), this.props.after);
       }
     }, {
       key: "renderGenericFormField",
@@ -328,13 +327,13 @@
             formId = _this$props.formId,
             nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId"]);
 
-        var props = _objectSpread({
+        var props = _objectSpread({}, nativeProps, {
           value: this.state.value,
           onChange: this.onChange,
           onFocus: this.onFocus,
           onBlur: this.onBlur,
           ref: this.el
-        }, nativeProps);
+        });
 
         if (_extraTypes[type]) {
           return _extraTypes[type].render(props, this.props, this.state);
@@ -374,6 +373,17 @@
         }
       }
     }, {
+      key: "renderError",
+      value: function renderError() {
+        if (this.state.error) return React.createElement("div", {
+          className: "generic-form-error"
+        }, this.state.error);
+        if (this.state.showGroupError && this.props.validation.errorGroup) return React.createElement("div", {
+          className: "generic-form-error"
+        }, this.props.validation.errorGroup);
+        return null;
+      }
+    }, {
       key: "onChange",
       value: function onChange(e) {
         var _this2 = this;
@@ -383,12 +393,16 @@
         if (isRadioOrCheckbox(this.props)) {
           stateUpdate.checked = !this.state.checked;
         } else {
-          stateUpdate.value = e.target.value;
+          stateUpdate.value = this.getValue();
         }
 
-        this.setState(stateUpdate, this.state.showError ? function () {
-          return _this2.validate();
-        } : null);
+        this.setState(stateUpdate, function () {
+          if (_this2.state.showError) _this2.validate();
+
+          if (_this2.state.showGroupError) {
+            _this2.validateGroups();
+          }
+        });
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
       }
     }, {
@@ -419,13 +433,9 @@
         }
 
         switch (this.props.type) {
-          case GenericFormFieldTypes.DATE:
-            value = this.el.current.input.value ? moment(this.el.current.input.value).format('YYYY-MM-DD') : null;
-            break;
-
           case GenericFormFieldTypes.RADIO:
           case GenericFormFieldTypes.CHECKBOX:
-            value = this.el.current.checked ? this.el.current.value || true : false;
+            value = this.el.current.checked ? this.props.value || true : false;
             break;
 
           default:
@@ -497,6 +507,45 @@
 
         return true;
       }
+    }, {
+      key: "showGroupError",
+      value: function showGroupError(show) {
+        this.setState({
+          showGroupError: typeof show === 'undefined' ? true : show
+        });
+      }
+    }, {
+      key: "validateGroups",
+      value: function validateGroups() {
+        var isValid = true;
+        var groups = GenericFormField.getFields(this.props.formId).reduce(function (acc, f) {
+          if (f.props.validation && f.props.validation.group) {
+            if (!Array.isArray(acc[f.props.validation.group])) acc[f.props.validation.group] = [];
+            acc[f.props.validation.group].push([f, f.getValue() && !f.getError()]);
+          }
+
+          return acc;
+        }, {});
+
+        for (var key in groups) {
+          var validFields = groups[key].filter(function (groupField) {
+            return groupField[1];
+          });
+
+          if (validFields.length < (groups[key][0][0].props.validation.groupMin || 1)) {
+            groups[key].forEach(function (groupField) {
+              groupField[0].showGroupError(true);
+            });
+            isValid = false;
+          } else {
+            groups[key].forEach(function (groupField) {
+              groupField[0].showGroupError(false);
+            });
+          }
+        }
+
+        return isValid;
+      }
     }], [{
       key: "registerField",
       value: function registerField(formId, field) {
@@ -530,7 +579,10 @@
     mandatory: PropTypes.bool,
     negativeRegex: PropTypes.object,
     positiveRegex: PropTypes.object,
-    errorEmpty: PropTypes.string
+    errorEmpty: PropTypes.string,
+    group: PropTypes.string,
+    groupMin: PropTypes.number,
+    errorGroup: PropTypes.string
   };
   var GenericFormFieldShape = {
     checked: PropTypes.bool,
@@ -623,8 +675,7 @@
           checkboxes[key] = checkboxes[key].filter(function (val) {
             return !!val;
           });
-
-          if (!key.endsWith('[]') && checkboxes[key].length === 1) {
+          if (!checkboxes[key].length) checkboxes[key] = false;else if (!key.endsWith('[]') && checkboxes[key].length === 1) {
             checkboxes[key] = checkboxes[key][0];
           }
         }
@@ -645,12 +696,15 @@
         var isValid = true;
 
         for (var i = 0, iLength = fields.length; i < iLength; i++) {
-          if (fields[i].props.validation) {
-            var validField = fields[i].validate();
+          var f = fields[i];
+
+          if (f.props.validation) {
+            var validField = f.validate();
             if (!validField) isValid = false;
           }
         }
 
+        if (!fields[0].validateGroups()) isValid = false;
         return isValid;
       }
     }]);

@@ -207,12 +207,11 @@ class GenericFormField extends React.Component {
         }
 
         switch (this.props.type) {
-            case GenericFormFieldTypes.DATE:
-                value = this.el.current.input.value ? moment(this.el.current.input.value).format('YYYY-MM-DD') : null;
-                break;
             case GenericFormFieldTypes.RADIO:
             case GenericFormFieldTypes.CHECKBOX:
-                value = this.el.current.checked ? this.el.current.value || true : false;
+                value = this.el.current.checked
+                    ? this.props.value || true
+                    : false;
                 break;
             default:
                 value = this.el.current.value;
@@ -292,7 +291,7 @@ class GenericFormField extends React.Component {
 
         let isValid = true;
         const groups = GenericFormField.getFields(this.props.formId).reduce((acc, f) => {
-            if (f.props.validation.group) {
+            if (f.props.validation && f.props.validation.group) {
                 if (!Array.isArray(acc[f.props.validation.group]))
                     acc[f.props.validation.group] = [];
                 acc[f.props.validation.group].push([f, f.getValue() && !f.getError()]);
