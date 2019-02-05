@@ -3,6 +3,12 @@
 GenericForm is a React form validation plugin. 
 Each form field can use a validation prop to define what format is expected.
 
+## Installation
+
+```
+$ yarn add generic-form
+```
+
 ## Components
 
 The library uses a form ID to handle form validation. You may use the GenericForm component
