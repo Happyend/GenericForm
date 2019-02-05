@@ -46,6 +46,7 @@ class GenericForm extends React.Component {
                 }
                 checkboxes[f.props.name].push(val);
             }
+
             return acc;
         }, {});
 
@@ -55,7 +56,6 @@ class GenericForm extends React.Component {
                 checkboxes[key] = checkboxes[key][0];
             }
         }
-
 
         for(let key in checkboxes) {
             if (key.endsWith('[]')) {
@@ -73,11 +73,14 @@ class GenericForm extends React.Component {
         let isValid = true;
 
         for (let i = 0, iLength = fields.length; i < iLength; i++) {
-            if (fields[i].props.validation) {
-                let validField = fields[i].validate();
+            let f = fields[i];
+            if (f.props.validation) {
+                let validField = f.validate();
                 if (!validField) isValid = false;
             }
         }
+
+        if (!fields[0].validateGroups()) isValid = false;
 
         return isValid;
 

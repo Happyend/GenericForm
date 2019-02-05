@@ -90,6 +90,28 @@ const App = () =>
                         'Field must contain a comma': ','
                     }
                 } } />
+            <p>Group with at least one mandatory checkbox</p>
+            <GenericFormField
+                formId="test"
+                type={GenericFormFieldTypes.CHECKBOX}
+                id="test-checkbox-field"
+                name={"checkbox"}
+                value={"value1"}
+                label="Checkbox 1"
+                validation={ {
+                    group:'checkbox-group',
+                    errorGroup: 'You must at least check one checkbox'
+                } } />
+            <GenericFormField
+                formId="test"
+                type={GenericFormFieldTypes.CHECKBOX}
+                id="test-checkbox-field"
+                name={"checkbox"}
+                value={"value2"}
+                label="Checkbox 2"
+                validation={ {
+                    group:'checkbox-group'
+                } } />
             <GenericFormField type={GenericFormFieldTypes.SUBMIT} value="Send"/>
         </GenericForm>
     </div>;

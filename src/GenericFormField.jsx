@@ -16,7 +16,8 @@ class GenericFormField extends React.Component {
             error: this.props.error,
             isFocused: false,
             value: props.defaultValue || props.value || '',
-            showError: false
+            showError: false,
+            showGroupError: false,
         };
 
         if (isRadioOrCheckbox(this.props))
@@ -75,7 +76,7 @@ class GenericFormField extends React.Component {
         if (this.props.break)
             className += 'break ';
 
-        if (this.state.error)
+        if (this.state.error || this.state.showGroupError)
             className += 'has-error ';
 
         return className;
@@ -89,7 +90,7 @@ class GenericFormField extends React.Component {
         return <div className={this.getClassName()}>
             <GenericFormFieldLabel {...this.props} value={this.state.value}/>
             {this.renderGenericFormField()}
-            {this.state.error && <div className="generic-form-error">{this.state.error}</div>}
+            {this.renderError()}
             { this.props.after }
         </div>;
     }
@@ -155,6 +156,13 @@ class GenericFormField extends React.Component {
         }
     }
 
+    renderError() {
+        if (this.state.error) return <div className="generic-form-error">{this.state.error}</div>;
+        if (this.state.showGroupError && this.props.validation.errorGroup)
+            return <div className="generic-form-error">{this.props.validation.errorGroup}</div>;
+        return null;
+    }
+
     onChange(e) {
         const stateUpdate = { };
         if (isRadioOrCheckbox(this.props)) {
@@ -165,9 +173,12 @@ class GenericFormField extends React.Component {
 
         this.setState(
             stateUpdate,
-            this.state.showError
-                ? () => this.validate()
-                : null
+            () => {
+                if (this.state.showError) this.validate();
+                if (this.state.showGroupError) {
+                    this.validateGroups();
+                }
+            }
         );
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
     }
@@ -271,6 +282,40 @@ class GenericFormField extends React.Component {
         return true;
     }
 
+    showGroupError(show) {
+        this.setState({
+            showGroupError: typeof show === 'undefined' ? true : show
+        });
+    }
+
+    validateGroups() {
+
+        let isValid = true;
+        const groups = GenericFormField.getFields(this.props.formId).reduce((acc, f) => {
+            if (f.props.validation.group) {
+                if (!Array.isArray(acc[f.props.validation.group]))
+                    acc[f.props.validation.group] = [];
+                acc[f.props.validation.group].push([f, f.getValue() && !f.getError()]);
+            }
+            return acc;
+        }, {});
+
+        for (let key in groups) {
+            let validFields = groups[key].filter(groupField => groupField[1]);
+            if (validFields.length < (groups[key][0][0].props.validation.groupMin || 1)) {
+                groups[key].forEach(groupField => {
+                    groupField[0].showGroupError(true);
+                });
+                isValid = false;
+            } else {
+                groups[key].forEach(groupField => {
+                    groupField[0].showGroupError(false);
+                });
+            }
+        }
+
+        return isValid;
+    }
 
     static registerField(formId, field) {
         if (!_genericForms[formId]) _genericForms[formId] = [];
@@ -299,6 +344,9 @@ const validationShape = {
     negativeRegex: PropTypes.object,
     positiveRegex: PropTypes.object,
     errorEmpty: PropTypes.string,
+    group: PropTypes.string,
+    groupMin: PropTypes.number,
+    errorGroup: PropTypes.string,
 };
 
 export const GenericFormFieldShape = {

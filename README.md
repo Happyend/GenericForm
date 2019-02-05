@@ -95,3 +95,31 @@ The negativeRegex prop allows you to define props that will trigger errors when 
         }
     } } />
 ```
+
+#### group (string)
+The group prop marks a field as part of a group, at least one (or groupMin) fields in a group
+should be valid for the form to be validated, if the requirement isn't met the field will display
+the groupError prop
+```
+<GenericFormField
+    validation={ {
+        group: 'field-group',
+        groupMin: 1,
+        groupError: 'At least one of these fields is required'
+    } } />
+```
+
+
+## Scripts
+
+### Running the example form
+
+An example is provided with the repository, you may start the parcel dev server by running the following command:
+```
+$ yarn example
+```
+
+### Building the module
+```
+$ yarn build
+```
