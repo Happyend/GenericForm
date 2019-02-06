@@ -81,7 +81,7 @@ class GenericForm extends React.Component {
             }
         }
 
-        if (!fields[0].validateGroups()) isValid = false;
+        if (fields[0] && !fields[0].validateGroups()) isValid = false;
 
         return isValid;
 
