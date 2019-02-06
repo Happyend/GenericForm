@@ -352,10 +352,14 @@
               value: ""
             }, label) : null, options.map(function (_ref, i) {
               var label = _ref.label,
-                  value = _ref.value;
+                  value = _ref.value,
+                  isPlaceholder = _ref.isPlaceholder;
               return React.createElement("option", {
                 key: i,
-                value: value
+                value: value,
+                disabled: isPlaceholder,
+                selected: isPlaceholder,
+                hidden: isPlaceholder
               }, label);
             }));
 

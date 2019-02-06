@@ -138,8 +138,14 @@ class GenericFormField extends React.Component {
                         <option value="">{label}</option>
                         : null}
                     {
-                        options.map(({ label, value }, i) =>
-                            <option key={i} value={value}>
+                        options.map(({ label, value, isPlaceholder }, i) =>
+                            <option
+                              key={i}
+                              value={value}
+                              disabled={isPlaceholder}
+                              selected={isPlaceholder}
+                              hidden={isPlaceholder}
+                            >
                                 {label}
                             </option>
                         )
