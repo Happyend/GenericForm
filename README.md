@@ -1,4 +1,7 @@
-# GenericForm
+# GenericForm [![npm][npm-image]][npm-url]
+
+[npm-image]: https://img.shields.io/npm/v/generic-form.svg
+[npm-url]: https://www.npmjs.com/package/generic-form
 
 GenericForm is a React form validation plugin. 
 Each form field can use a validation prop to define what format is expected.
