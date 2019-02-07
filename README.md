@@ -1,5 +1,7 @@
 # GenericForm [![npm][npm-image]][npm-url]
 
+![logo](https://s3.amazonaws.com/word-art/5c5c51c120152c19834ad3d2.png)
+
 [npm-image]: https://img.shields.io/npm/v/generic-form.svg
 [npm-url]: https://www.npmjs.com/package/generic-form
 
