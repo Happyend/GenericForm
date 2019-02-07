@@ -242,7 +242,8 @@
         error: _this.props.error,
         isFocused: false,
         value: props.defaultValue || props.value || '',
-        showError: false,
+        showError: isRadioOrCheckbox(_this.props),
+        //force showError if radio or checkbox for firefox/safari onBlur
         showGroupError: false
       };
       if (isRadioOrCheckbox(_this.props)) _this.state.checked = _this.props.checked || false;
@@ -708,7 +709,7 @@
           }
         }
 
-        if (!fields[0].validateGroups()) isValid = false;
+        if (fields[0] && !fields[0].validateGroups()) isValid = false;
         return isValid;
       }
     }]);
