@@ -239,7 +239,7 @@
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(GenericFormField).call(this, props));
       _this.state = {
-        error: _this.props.error,
+        error: false,
         isFocused: false,
         value: props.defaultValue || props.value || '',
         showError: isRadioOrCheckbox(_this.props),

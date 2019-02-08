@@ -13,7 +13,7 @@ class GenericFormField extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: this.props.error,
+            error: false,
             isFocused: false,
             value: props.defaultValue || props.value || '',
             showError: isRadioOrCheckbox(this.props), //force showError if radio or checkbox for firefox/safari onBlur
