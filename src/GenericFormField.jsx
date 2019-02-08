@@ -45,9 +45,6 @@ class GenericFormField extends React.Component {
         if (this.props.checked !== prevProps.checked)
             stateUpdate.checked = this.props.checked;
 
-        if (this.props.error !== prevProps.error)
-            stateUpdate.error = this.props.error;
-
         if (Object.keys(stateUpdate).length) this.setState(stateUpdate);
     }
 
@@ -76,7 +73,7 @@ class GenericFormField extends React.Component {
         if (this.props.break)
             className += 'break ';
 
-        if (this.state.error || this.state.showGroupError)
+        if (this.props.error || this.state.error || this.state.showGroupError)
             className += 'has-error ';
 
         return className;
@@ -111,6 +108,7 @@ class GenericFormField extends React.Component {
             after,
             validation,
             formId,
+            fieldType,
             ...nativeProps
         } = this.props;
 
@@ -163,7 +161,7 @@ class GenericFormField extends React.Component {
     }
 
     renderError() {
-        if (this.state.error) return <div className="generic-form-error">{this.state.error}</div>;
+        if (this.props.error || this.state.error) return <div className="generic-form-error">{this.props.error || this.state.error}</div>;
         if (this.state.showGroupError && this.props.validation.errorGroup)
             return <div className="generic-form-error">{this.props.validation.errorGroup}</div>;
         return null;

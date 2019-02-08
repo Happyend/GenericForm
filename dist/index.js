@@ -266,7 +266,6 @@
         var stateUpdate = {};
         if (this.props.value !== prevProps.value) stateUpdate.value = this.props.value;
         if (this.props.checked !== prevProps.checked) stateUpdate.checked = this.props.checked;
-        if (this.props.error !== prevProps.error) stateUpdate.error = this.props.error;
         if (Object.keys(stateUpdate).length) this.setState(stateUpdate);
       }
     }, {
@@ -296,7 +295,7 @@
         }
 
         if (this.props.break) className += 'break ';
-        if (this.state.error || this.state.showGroupError) className += 'has-error ';
+        if (this.props.error || this.state.error || this.state.showGroupError) className += 'has-error ';
         return className;
       }
     }, {
@@ -326,7 +325,8 @@
             after = _this$props.after,
             validation = _this$props.validation,
             formId = _this$props.formId,
-            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId"]);
+            fieldType = _this$props.fieldType,
+            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType"]);
 
         var props = _objectSpread({}, nativeProps, {
           value: this.state.value,
@@ -380,9 +380,9 @@
     }, {
       key: "renderError",
       value: function renderError() {
-        if (this.state.error) return React.createElement("div", {
+        if (this.props.error || this.state.error) return React.createElement("div", {
           className: "generic-form-error"
-        }, this.state.error);
+        }, this.props.error || this.state.error);
         if (this.state.showGroupError && this.props.validation.errorGroup) return React.createElement("div", {
           className: "generic-form-error"
         }, this.props.validation.errorGroup);
