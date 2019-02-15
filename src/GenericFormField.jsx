@@ -118,6 +118,12 @@ class GenericFormField extends React.Component {
             onChange: this.onChange,
             onFocus: this.onFocus,
             onBlur: this.onBlur,
+            'aria-invalid': !!this.state.error,
+            'aria-required': validation && validation.mandatory,
+            'aria-describedby':
+              !!this.state.error
+                ? GenericFormField.getErrorFieldId(this.props.id)
+                : null,
             ref: this.el,
         };
 
@@ -154,6 +160,7 @@ class GenericFormField extends React.Component {
             case GenericFormFieldTypes.NUMBER:
             case GenericFormFieldTypes.TEL:
             case GenericFormFieldTypes.TEXT:
+
             case GenericFormFieldTypes.SUBMIT:
             default:
                 return <input {...props} type={type}/>;
@@ -161,9 +168,19 @@ class GenericFormField extends React.Component {
     }
 
     renderError() {
-        if (this.props.error || this.state.error) return <div className="generic-form-error">{this.props.error || this.state.error}</div>;
+        const adaAttributes = {
+          'aria-live': 'polite',
+          'aria-relevant': 'text',
+          id: GenericFormField.getErrorFieldId(this.props.id),
+        };
+        if (this.props.error || this.state.error)
+          return <div { ...adaAttributes } className="generic-form-error">
+            {this.props.error || this.state.error}
+          </div>;
         if (this.state.showGroupError && this.props.validation.errorGroup)
-            return <div className="generic-form-error">{this.props.validation.errorGroup}</div>;
+            return <div { ...adaAttributes } className="generic-form-error">
+              {this.props.validation.errorGroup}
+            </div>;
         return null;
     }
 
@@ -318,6 +335,10 @@ class GenericFormField extends React.Component {
         }
 
         return isValid;
+    }
+
+    static getErrorFieldId(id){
+      return `${id}-error`;
     }
 
     static registerField(formId, field) {
