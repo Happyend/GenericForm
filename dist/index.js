@@ -333,6 +333,9 @@
           onChange: this.onChange,
           onFocus: this.onFocus,
           onBlur: this.onBlur,
+          'aria-invalid': !!this.state.error,
+          'aria-required': validation && validation.mandatory,
+          'aria-describedby': !!this.state.error ? GenericFormField.getErrorFieldId(this.props.id) : null,
           ref: this.el
         });
 
@@ -380,12 +383,17 @@
     }, {
       key: "renderError",
       value: function renderError() {
-        if (this.props.error || this.state.error) return React.createElement("div", {
+        var adaAttributes = {
+          'aria-live': 'polite',
+          'aria-relevant': 'text',
+          id: GenericFormField.getErrorFieldId(this.props.id)
+        };
+        if (this.props.error || this.state.error) return React.createElement("div", _extends({}, adaAttributes, {
           className: "generic-form-error"
-        }, this.props.error || this.state.error);
-        if (this.state.showGroupError && this.props.validation.errorGroup) return React.createElement("div", {
+        }), this.props.error || this.state.error);
+        if (this.state.showGroupError && this.props.validation.errorGroup) return React.createElement("div", _extends({}, adaAttributes, {
           className: "generic-form-error"
-        }, this.props.validation.errorGroup);
+        }), this.props.validation.errorGroup);
         return null;
       }
     }, {
@@ -552,6 +560,11 @@
         return isValid;
       }
     }], [{
+      key: "getErrorFieldId",
+      value: function getErrorFieldId(id) {
+        return "".concat(id, "-error");
+      }
+    }, {
       key: "registerField",
       value: function registerField(formId, field) {
         if (!_genericForms[formId]) _genericForms[formId] = [];
