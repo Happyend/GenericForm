@@ -407,6 +407,7 @@
           stateUpdate.checked = !this.state.checked;
         } else {
           stateUpdate.value = this.getValue();
+          if (this.props.maxLength) stateUpdate.value = stateUpdate.value.substr(0, this.props.maxLength);
         }
 
         this.setState(stateUpdate, function () {
@@ -606,6 +607,7 @@
     checked: PropTypes.bool,
     className: PropTypes.string,
     id: PropTypes.string,
+    maxLength: PropTypes.number,
     label: PropTypes.node,
     name: PropTypes.string,
     onChange: PropTypes.func,
