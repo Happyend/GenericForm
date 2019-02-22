@@ -42,6 +42,8 @@ class GenericFormField extends React.Component {
             this.setFormIsValid(this.validateFields(true) )
         }
 
+        this.handleDisabledUntilValid();
+
     }
 
     componentDidUpdate(prevProps) {
@@ -60,6 +62,7 @@ class GenericFormField extends React.Component {
     componentWillUnmount() {
         if (this.props.type !== GenericFormFieldTypes.SUBMIT)
             GenericFormField.unregisterField(this.props.formId, this);
+        this.handleDisabledUntilValid();
     }
 
     getClassName() {
