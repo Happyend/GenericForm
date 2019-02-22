@@ -31,8 +31,17 @@ class GenericFormField extends React.Component {
     }
 
     componentDidMount() {
+        if (!_genericForms[this.props.formId]) _genericForms[this.props.formId] = {};
+
         if (this.props.type !== GenericFormFieldTypes.SUBMIT)
             GenericFormField.registerField(this.props.formId, this);
+
+        if (this.props.disableUntilValid && this.props.formId) {
+            if (!_genericForms[this.props.formId].disableUntilValid ) _genericForms[this.props.formId].disableUntilValid = [];
+            _genericForms[this.props.formId].disableUntilValid.push(this);
+            this.setFormIsValid(this.validateFields(true) )
+        }
+
     }
 
     componentDidUpdate(prevProps) {
@@ -94,6 +103,7 @@ class GenericFormField extends React.Component {
 
     renderGenericFormField() {
 
+        // destructure all non native props to avoid passing them with the rest operator
         const {
             dataType,
             label,
@@ -109,6 +119,8 @@ class GenericFormField extends React.Component {
             validation,
             formId,
             fieldType,
+            disableUntilValid,
+            disabled,
             ...nativeProps
         } = this.props;
 
@@ -125,6 +137,7 @@ class GenericFormField extends React.Component {
                 ? GenericFormField.getErrorFieldId(this.props.id)
                 : null,
             ref: this.el,
+            disabled: disabled || (disableUntilValid && !this.state.formIsValid|| false)
         };
 
         if (_extraTypes[type]) {
@@ -200,6 +213,8 @@ class GenericFormField extends React.Component {
                 if (this.state.showGroupError) {
                     this.validateGroups();
                 }
+
+                this.handleDisabledUntilValid();
             }
         );
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
@@ -285,22 +300,62 @@ class GenericFormField extends React.Component {
         return false;
     }
 
-    validate() {
+    validate(silent) {
         if (this.props.validation) {
             const error = this.getError();
-            this.setState({
-                error,
-                showError: true
-            });
-
+            if (!silent) {
+                this.setState({
+                    error,
+                    showError: true
+                });
+            }
             if (error)
                 return false;
-        } else {
+        } else if (!silent) {
             this.setState({
                 showError: true
             });
         }
         return true;
+    }
+
+    validateFields(silent) {
+
+        const fields = GenericFormField.getFields(this.props.formId);
+        let isValid = true;
+
+        for (let i = 0, iLength = fields.length; i < iLength; i++) {
+            let f = fields[i];
+            if (f.props.validation) {
+                let validField = f.validate(silent);
+                if (!validField) isValid = false;
+            }
+        }
+
+        if (fields[0] && !fields[0].validateGroups(silent)) isValid = false;
+
+        return isValid;
+
+    }
+
+    handleDisabledUntilValid() {
+
+        if (_genericForms[this.props.formId].disableUntilValid &&
+            _genericForms[this.props.formId].disableUntilValid.length) {
+            const isValid = this.validateFields(true);
+
+            _genericForms[this.props.formId].disableUntilValid.forEach(
+                f => f.setFormIsValid(isValid)
+            );
+        }
+
+    }
+
+    setFormIsValid(formIsValid) {
+
+        this.setState({
+            formIsValid
+        });
     }
 
     showGroupError(show) {
@@ -309,7 +364,7 @@ class GenericFormField extends React.Component {
         });
     }
 
-    validateGroups() {
+    validateGroups(silent) {
 
         let isValid = true;
         const groups = GenericFormField.getFields(this.props.formId).reduce((acc, f) => {
@@ -324,14 +379,18 @@ class GenericFormField extends React.Component {
         for (let key in groups) {
             let validFields = groups[key].filter(groupField => groupField[1]);
             if (validFields.length < (groups[key][0][0].props.validation.groupMin || 1)) {
-                groups[key].forEach(groupField => {
-                    groupField[0].showGroupError(true);
-                });
+                if (!silent) {
+                    groups[key].forEach(groupField => {
+                        groupField[0].showGroupError(true);
+                    });
+                }
                 isValid = false;
             } else {
-                groups[key].forEach(groupField => {
-                    groupField[0].showGroupError(false);
-                });
+                if (!silent) {
+                    groups[key].forEach(groupField => {
+                        groupField[0].showGroupError(false);
+                    });
+                }
             }
         }
 
@@ -343,18 +402,18 @@ class GenericFormField extends React.Component {
     }
 
     static registerField(formId, field) {
-        if (!_genericForms[formId]) _genericForms[formId] = [];
-        _genericForms[formId] = [..._genericForms[formId], field];
+        _genericForms[formId].fields = [..._genericForms[formId].fields || [], field];
     }
 
     static unregisterField(formId, field) {
-        const fields = [..._genericForms[formId]];
-        fields.splice(_genericForms[formId].indexOf(field), 1);
-        _genericForms[formId] = fields.length ? fields : null;
+        const fields = [..._genericForms[formId].fields];
+        fields.splice(_genericForms[formId].fields.indexOf(field), 1);
+        if (!fields.length) delete _genericForms[formId];
+        else _genericForms[formId].fields = fields;
     }
 
     static getFields(formId) {
-        return _genericForms[formId] || [];
+        return _genericForms[formId] && _genericForms[formId].fields || [];
     }
 
     static registerExtraType(type, options) {
@@ -371,7 +430,7 @@ const validationShape = {
     errorEmpty: PropTypes.string,
     group: PropTypes.string,
     groupMin: PropTypes.number,
-    errorGroup: PropTypes.string,
+    errorGroup: PropTypes.string
 };
 
 export const GenericFormFieldShape = {
@@ -389,7 +448,8 @@ export const GenericFormFieldShape = {
     validation: PropTypes.shape(validationShape),
     value: PropTypes.any,
     labelAsDefault: PropTypes.bool,
-    after: PropTypes.node
+    after: PropTypes.node,
+    disableUntilValid: PropTypes.bool
 };
 
 GenericFormFieldLabel.propTypes = GenericFormFieldShape;

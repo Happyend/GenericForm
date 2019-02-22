@@ -123,6 +123,15 @@ the groupError prop
     } } />
 ```
 
+#### disableUntilvValid
+This prop disables a field until all fields in the form are valid:
+```
+<GenericFormField
+    formId="test"
+    type="submit"
+    disableUntilValid />
+```
+
 ## Using external libraries
 
 The package supports external library components through the GenericFormField static method 'registerExtraType'.

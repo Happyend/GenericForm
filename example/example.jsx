@@ -5,6 +5,8 @@ import GenericFormField from '../src/GenericFormField';
 
 const App = () =>
     <div>
+
+        <h1> Test 1</h1>
         <GenericForm id="test"
                      onSubmit={(e, vals) => {
                          e.preventDefault();
@@ -126,8 +128,26 @@ const App = () =>
                 validation={ {
                     group:'checkbox-group'
                 } } />
-            <GenericFormField type={GenericFormFieldTypes.SUBMIT} value="Send"/>
+            <GenericFormField
+                formId="test"
+                disableUntilValid
+                type={GenericFormFieldTypes.SUBMIT}
+                value="Send"
+            />
         </GenericForm>
+
+        <h2>Test 2</h2>
+        <GenericForm id="test2"
+            onSubmit={(e, vals) => {
+                e.preventDefault();
+                console.log(vals);
+            }}>
+            <GenericFormField
+                type={GenericFormFieldTypes.SUBMIT}
+                value="Send"
+            />
+        </GenericForm>
+
     </div>;
 
 
