@@ -24,10 +24,13 @@ class GenericForm extends React.Component {
     }
 
     _onSubmit(e) {
-        const isValid = this.validateFields();
-        if (!isValid) {
-            e.preventDefault();
-            return;
+        const fields = GenericFormField.getFields(this.props.id);
+        if (fields.length) {
+            const isValid = fields[0].validateFields();
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
         }
         if (typeof this.props.onSubmit === 'function')
             this.props.onSubmit(e, this.getValues());
@@ -66,25 +69,6 @@ class GenericForm extends React.Component {
         }
 
         return { ...values, ...checkboxes };
-    }
-
-    validateFields() {
-
-        const fields = GenericFormField.getFields(this.props.id);
-        let isValid = true;
-
-        for (let i = 0, iLength = fields.length; i < iLength; i++) {
-            let f = fields[i];
-            if (f.props.validation) {
-                let validField = f.validate();
-                if (!validField) isValid = false;
-            }
-        }
-
-        if (fields[0] && !fields[0].validateGroups()) isValid = false;
-
-        return isValid;
-
     }
 
 }

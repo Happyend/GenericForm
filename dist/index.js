@@ -258,7 +258,16 @@
     _createClass(GenericFormField, [{
       key: "componentDidMount",
       value: function componentDidMount() {
+        if (!_genericForms[this.props.formId]) _genericForms[this.props.formId] = {};
         if (this.props.type !== GenericFormFieldTypes.SUBMIT) GenericFormField.registerField(this.props.formId, this);
+
+        if (this.props.disableUntilValid && this.props.formId) {
+          if (!_genericForms[this.props.formId].disableUntilValid) _genericForms[this.props.formId].disableUntilValid = [];
+
+          _genericForms[this.props.formId].disableUntilValid.push(this);
+
+          this.setFormIsValid(this.validateFields(true));
+        }
       }
     }, {
       key: "componentDidUpdate",
@@ -311,6 +320,7 @@
     }, {
       key: "renderGenericFormField",
       value: function renderGenericFormField() {
+        // destructure all non native props to avoid passing them with the rest operator
         var _this$props = this.props,
             dataType = _this$props.dataType,
             label = _this$props.label,
@@ -326,7 +336,9 @@
             validation = _this$props.validation,
             formId = _this$props.formId,
             fieldType = _this$props.fieldType,
-            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType"]);
+            disableUntilValid = _this$props.disableUntilValid,
+            disabled = _this$props.disabled,
+            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType", "disableUntilValid", "disabled"]);
 
         var props = _objectSpread({}, nativeProps, {
           value: this.state.value,
@@ -336,7 +348,8 @@
           'aria-invalid': !!this.state.error,
           'aria-required': validation && validation.mandatory,
           'aria-describedby': !!this.state.error ? GenericFormField.getErrorFieldId(this.props.id) : null,
-          ref: this.el
+          ref: this.el,
+          disabled: disabled || disableUntilValid && !this.state.formIsValid || false
         });
 
         if (_extraTypes[type]) {
@@ -416,6 +429,8 @@
           if (_this2.state.showGroupError) {
             _this2.validateGroups();
           }
+
+          _this2.handleDisabledUntilValid();
         });
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
       }
@@ -505,21 +520,61 @@
       }
     }, {
       key: "validate",
-      value: function validate() {
+      value: function validate(silent) {
         if (this.props.validation) {
           var error = this.getError();
-          this.setState({
-            error: error,
-            showError: true
-          });
+
+          if (!silent) {
+            this.setState({
+              error: error,
+              showError: true
+            });
+          }
+
           if (error) return false;
-        } else {
+        } else if (!silent) {
           this.setState({
             showError: true
           });
         }
 
         return true;
+      }
+    }, {
+      key: "validateFields",
+      value: function validateFields(silent) {
+        var fields = GenericFormField.getFields(this.props.formId);
+        var isValid = true;
+
+        for (var i = 0, iLength = fields.length; i < iLength; i++) {
+          var f = fields[i];
+
+          if (f.props.validation) {
+            var validField = f.validate(silent);
+            if (!validField) isValid = false;
+          }
+        }
+
+        if (fields[0] && !fields[0].validateGroups(silent)) isValid = false;
+        return isValid;
+      }
+    }, {
+      key: "handleDisabledUntilValid",
+      value: function handleDisabledUntilValid() {
+        if (_genericForms[this.props.formId].disableUntilValid && _genericForms[this.props.formId].disableUntilValid.length) {
+          var isValid = this.validateFields(true);
+
+          _genericForms[this.props.formId].disableUntilValid.forEach(function (f) {
+            return f.setFormIsValid(isValid);
+          });
+        }
+      }
+    }, {
+      key: "setFormIsValid",
+      value: function setFormIsValid(formIsValid) {
+        this.setState({
+          formIsValid: formIsValid
+        });
       }
     }, {
       key: "showGroupError",
@@ -530,7 +585,7 @@
       }
     }, {
       key: "validateGroups",
-      value: function validateGroups() {
+      value: function validateGroups(silent) {
         var isValid = true;
         var groups = GenericFormField.getFields(this.props.formId).reduce(function (acc, f) {
           if (f.props.validation && f.props.validation.group) {
@@ -547,14 +602,19 @@
           });
 
           if (validFields.length < (groups[key][0][0].props.validation.groupMin || 1)) {
-            groups[key].forEach(function (groupField) {
-              groupField[0].showGroupError(true);
-            });
+            if (!silent) {
+              groups[key].forEach(function (groupField) {
+                groupField[0].showGroupError(true);
+              });
+            }
+
             isValid = false;
           } else {
-            groups[key].forEach(function (groupField) {
-              groupField[0].showGroupError(false);
-            });
+            if (!silent) {
+              groups[key].forEach(function (groupField) {
+                groupField[0].showGroupError(false);
+              });
+            }
           }
         }
 
@@ -568,21 +628,20 @@
     }, {
       key: "registerField",
       value: function registerField(formId, field) {
-        if (!_genericForms[formId]) _genericForms[formId] = [];
-        _genericForms[formId] = [].concat(_toConsumableArray(_genericForms[formId]), [field]);
+        _genericForms[formId].fields = [].concat(_toConsumableArray(_genericForms[formId].fields || []), [field]);
       }
     }, {
       key: "unregisterField",
       value: function unregisterField(formId, field) {
-        var fields = _toConsumableArray(_genericForms[formId]);
+        var fields = _toConsumableArray(_genericForms[formId].fields);
 
-        fields.splice(_genericForms[formId].indexOf(field), 1);
-        _genericForms[formId] = fields.length ? fields : null;
+        fields.splice(_genericForms[formId].fields.indexOf(field), 1);
+        if (!fields.length) delete _genericForms[formId];else _genericForms[formId].fields = fields;
       }
     }, {
       key: "getFields",
       value: function getFields(formId) {
-        return _genericForms[formId] || [];
+        return _genericForms[formId] && _genericForms[formId].fields || [];
       }
     }, {
       key: "registerExtraType",
@@ -618,7 +677,8 @@
     validation: PropTypes.shape(validationShape),
     value: PropTypes.any,
     labelAsDefault: PropTypes.bool,
-    after: PropTypes.node
+    after: PropTypes.node,
+    disableUntilValid: PropTypes.bool
   };
   GenericFormFieldLabel.propTypes = GenericFormFieldShape;
   GenericFormField.propTypes = GenericFormFieldShape;
@@ -662,11 +722,15 @@
     }, {
       key: "_onSubmit",
       value: function _onSubmit(e) {
-        var isValid = this.validateFields();
+        var fields = GenericFormField.getFields(this.props.id);
 
-        if (!isValid) {
-          e.preventDefault();
-          return;
+        if (fields.length) {
+          var isValid = fields[0].validateFields();
+
+          if (!isValid) {
+            e.preventDefault();
+            return;
+          }
         }
 
         if (typeof this.props.onSubmit === 'function') this.props.onSubmit(e, this.getValues());
@@ -708,24 +772,6 @@
         }
 
         return _objectSpread({}, values, checkboxes);
-      }
-    }, {
-      key: "validateFields",
-      value: function validateFields() {
-        var fields = GenericFormField.getFields(this.props.id);
-        var isValid = true;
-
-        for (var i = 0, iLength = fields.length; i < iLength; i++) {
-          var f = fields[i];
-
-          if (f.props.validation) {
-            var validField = f.validate();
-            if (!validField) isValid = false;
-          }
-        }
-
-        if (fields[0] && !fields[0].validateGroups()) isValid = false;
-        return isValid;
       }
     }]);
 

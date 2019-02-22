@@ -5,6 +5,8 @@ import GenericFormField from '../src/GenericFormField';
 
 const App = () =>
     <div>
+
+        <h1> Test 1</h1>
         <GenericForm id="test"
                      onSubmit={(e, vals) => {
                          e.preventDefault();
@@ -104,11 +106,24 @@ const App = () =>
                         'Field must contain a comma': ','
                     }
                 } } />
-            <p>Group with at least one mandatory checkbox</p>
             <GenericFormField
                 formId="test"
+                type={GenericFormFieldTypes.SUBMIT}
+                value="Send"
+            />
+        </GenericForm>
+
+        <h1>Test 2: Submit is disabled until the form is valid</h1>
+        <GenericForm id="test2"
+            onSubmit={(e, vals) => {
+                e.preventDefault();
+                console.log(vals);
+            }}>
+            <p>Group with at least one mandatory checkbox</p>
+            <GenericFormField
+                formId="test2"
                 type={GenericFormFieldTypes.CHECKBOX}
-                id="test-checkbox-field"
+                id="test-checkbox-field2"
                 name={"checkbox"}
                 value={"value1"}
                 label="Checkbox 1"
@@ -117,17 +132,24 @@ const App = () =>
                     errorGroup: 'You must at least check one checkbox'
                 } } />
             <GenericFormField
-                formId="test"
+                formId="test2"
                 type={GenericFormFieldTypes.CHECKBOX}
-                id="test-checkbox-field"
+                id="test-checkbox-field2"
                 name={"checkbox"}
                 value={"value2"}
                 label="Checkbox 2"
                 validation={ {
                     group:'checkbox-group'
                 } } />
-            <GenericFormField type={GenericFormFieldTypes.SUBMIT} value="Send"/>
+
+            <GenericFormField
+                formId="test2"
+                type={GenericFormFieldTypes.SUBMIT}
+                disableUntilValid
+                value="Send"
+            />
         </GenericForm>
+
     </div>;
 
 
