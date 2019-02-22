@@ -268,6 +268,8 @@
 
           this.setFormIsValid(this.validateFields(true));
         }
+
+        this.handleDisabledUntilValid();
       }
     }, {
       key: "componentDidUpdate",
@@ -281,6 +283,7 @@
       key: "componentWillUnmount",
       value: function componentWillUnmount() {
         if (this.props.type !== GenericFormFieldTypes.SUBMIT) GenericFormField.unregisterField(this.props.formId, this);
+        this.handleDisabledUntilValid();
       }
     }, {
       key: "getClassName",
