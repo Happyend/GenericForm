@@ -564,7 +564,7 @@
     }, {
       key: "handleDisabledUntilValid",
       value: function handleDisabledUntilValid() {
-        if (_genericForms[this.props.formId].disableUntilValid && _genericForms[this.props.formId].disableUntilValid.length) {
+        if (_genericForms[this.props.formId] && _genericForms[this.props.formId].disableUntilValid && _genericForms[this.props.formId].disableUntilValid.length) {
           var isValid = this.validateFields(true);
 
           _genericForms[this.props.formId].disableUntilValid.forEach(function (f) {
