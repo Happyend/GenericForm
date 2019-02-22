@@ -343,7 +343,7 @@ class GenericFormField extends React.Component {
 
     handleDisabledUntilValid() {
 
-        if (_genericForms[this.props.formId].disableUntilValid &&
+        if (_genericForms[this.props.formId] && _genericForms[this.props.formId].disableUntilValid &&
             _genericForms[this.props.formId].disableUntilValid.length) {
             const isValid = this.validateFields(true);
 
