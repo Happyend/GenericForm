@@ -241,7 +241,9 @@
       _this.state = {
         error: false,
         isFocused: false,
-        value: props.defaultValue || props.value || '',
+        // GenericFormField is always controlled by default if no value or defaultValue is set we use
+        // an empty string, however you may override this behaviour with the defaultEmptyValue prop
+        value: props.defaultValue || props.value || props.defaultEmptyValue || '',
         showError: isRadioOrCheckbox(_this.props),
         //force showError if radio or checkbox for firefox/safari onBlur
         showGroupError: false
@@ -679,6 +681,7 @@
     dataType: PropTypes.string,
     validation: PropTypes.shape(validationShape),
     value: PropTypes.any,
+    defaultEmptyValue: PropTypes.any,
     labelAsDefault: PropTypes.bool,
     after: PropTypes.node,
     disableUntilValid: PropTypes.bool
