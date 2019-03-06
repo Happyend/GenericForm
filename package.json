@@ -1,6 +1,6 @@
 {
   "name": "generic-form",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
