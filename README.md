@@ -132,6 +132,15 @@ This prop disables a field until all fields in the form are valid:
     disableUntilValid />
 ```
 
+## Other props
+
+#### maxLength (number)
+This crops the fields value to a given length (even for non number types)
+
+#### defaultEmptyValue (any)
+GenericFormField is always controlled by default if no value or defaultValue is set we use
+an empty string, however you may override this behaviour with the defaultEmptyValue prop
+
 ## Using external libraries
 
 The package supports external library components through the GenericFormField static method 'registerExtraType'.
