@@ -243,7 +243,7 @@
         isFocused: false,
         // GenericFormField is always controlled by default if no value or defaultValue is set we use
         // an empty string, however you may override this behaviour with the defaultEmptyValue prop
-        value: props.defaultValue || props.value || props.defaultEmptyValue || '',
+        value: props.defaultValue || props.value || props.hasOwnProperty('defaultEmptyValue') ? props.defaultEmptyValue : '',
         showError: isRadioOrCheckbox(_this.props),
         //force showError if radio or checkbox for firefox/safari onBlur
         showGroupError: false
