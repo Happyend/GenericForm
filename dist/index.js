@@ -292,7 +292,7 @@
         if (this.props.className) className += "".concat(this.props.className, " ");
         if (this.state.isFocused) className += 'is-focused ';
         if (this.state.checked) className += 'is-checked ';
-        if (this.state.value || this.state.value !== '') className += 'has-value ';
+        if (typeof this.state.value !== 'undefined' && this.state.value !== '') className += 'has-value ';
 
         if (this.props.size) {
           switch (this.props.size) {
