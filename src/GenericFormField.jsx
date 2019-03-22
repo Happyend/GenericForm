@@ -139,8 +139,8 @@ class GenericFormField extends React.Component {
             'aria-required': validation && validation.mandatory,
             'aria-describedby':
               !!this.state.error
-                ? GenericFormField.getErrorFieldId(this.props.id)
-                : null,
+                ? GenericFormField.getErrorFieldId(this.props.id) + (this.props['aria-describedby'] ? ' ' + this.props['aria-describedby'] : '')
+                : this.props['aria-describedby'],
             ref: this.el,
             disabled: disabled || (disableUntilValid && !this.state.formIsValid|| false)
         };
