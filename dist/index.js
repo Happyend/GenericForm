@@ -249,10 +249,10 @@
         showGroupError: false
       };
       if (isRadioOrCheckbox(_this.props)) _this.state.checked = _this.props.checked || false;
-      _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-      _this.getValue = _this.getValue.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+      _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_this));
+      _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_this));
+      _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
+      _this.getValue = _this.getValue.bind(_assertThisInitialized(_this));
       _this.el = React.createRef();
       return _this;
     }
@@ -352,7 +352,7 @@
           onBlur: this.onBlur,
           'aria-invalid': !!this.state.error,
           'aria-required': validation && validation.mandatory,
-          'aria-describedby': !!this.state.error ? GenericFormField.getErrorFieldId(this.props.id) : null,
+          'aria-describedby': !!this.state.error ? GenericFormField.getErrorFieldId(this.props.id) + (this.props['aria-describedby'] ? ' ' + this.props['aria-describedby'] : '') : this.props['aria-describedby'],
           ref: this.el,
           disabled: disabled || disableUntilValid && !this.state.formIsValid || false
         });
@@ -701,7 +701,7 @@
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(GenericForm).call(this, props));
       _this.fields = [];
-      _this._onSubmit = _this._onSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+      _this._onSubmit = _this._onSubmit.bind(_assertThisInitialized(_this));
       return _this;
     }
 
@@ -807,9 +807,9 @@
   };
 
   exports.GenericFormField = GenericFormField;
-  exports.GenericFormFields = GenericFormFields;
-  exports.GenericFormFieldTypes = GenericFormFieldTypes;
   exports.GenericFormFieldDataTypes = GenericFormFieldDataTypes;
+  exports.GenericFormFieldTypes = GenericFormFieldTypes;
+  exports.GenericFormFields = GenericFormFields;
   exports.default = GenericForm;
 
   Object.defineProperty(exports, '__esModule', { value: true });
