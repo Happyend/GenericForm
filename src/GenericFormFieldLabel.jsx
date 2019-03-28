@@ -9,9 +9,9 @@ const GenericFormFieldLabel = ({
     value
 }) =>
     label && (type !== GenericFormFieldTypes.SELECT || !labelAsDefault || value)
-        ? <label htmlFor={id}>
+        ? <div htmlFor={id}>
             {label}
-        </label>
+        </div>
         : null;
 
 export default GenericFormFieldLabel;
