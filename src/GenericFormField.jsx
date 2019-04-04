@@ -416,8 +416,7 @@ class GenericFormField extends React.Component {
     static unregisterField(formId, field) {
         const fields = [..._genericForms[formId].fields];
         fields.splice(_genericForms[formId].fields.indexOf(field), 1);
-        if (!fields.length) delete _genericForms[formId];
-        else _genericForms[formId].fields = fields;
+        _genericForms[formId].fields = fields;
     }
 
     static getFields(formId) {
