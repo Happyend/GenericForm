@@ -113,17 +113,28 @@ The negativeRegex prop allows you to define props that will trigger errors when 
 #### group (string)
 The group prop marks a field as part of a group, at least one (or groupMin) fields in a group
 should be valid for the form to be validated, if the requirement isn't met the field will display
-the groupError prop
+the errorGroup prop
 ```
 <GenericFormField
     validation={ {
         group: 'field-group',
         groupMin: 1,
-        groupError: 'At least one of these fields is required'
+        errorGroup: 'At least one of these fields is required'
     } } />
 ```
 
-#### disableUntilvValid
+#### identicalGroup (string)
+The identicalGroup prop marks a field as part of a group where all values must be equal. 
+If the requirement isn't met the field will display the errorIdenticalGroup prop.
+```
+<GenericFormField
+    validation={ {
+        identicalGroup: 'field-group',
+        errorIdenticalGroup: 'These fields must be identical'
+    } } />
+```
+
+#### disableUntilValid
 This prop disables a field until all fields in the form are valid:
 ```
 <GenericFormField

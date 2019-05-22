@@ -141,6 +141,26 @@ const App = () =>
                 validation={ {
                     group:'checkbox-group'
                 } } />
+            <GenericFormField
+                formId="test2"
+                type={GenericFormFieldTypes.PASSWORD}
+                id="test-checkbox-field3"
+                name={"password1"}
+                label="Password 1"
+                validation={ {
+                    identicalGroup: 'password-group',
+                    errorIdenticalGroup: 'Both passwords must be identical'
+                } } />
+            <GenericFormField
+                formId="test2"
+                type={GenericFormFieldTypes.PASSWORD}
+                id="test-checkbox-field4"
+                name={"password2"}
+                label="Password 2"
+                validation={ {
+                    identicalGroup: 'password-group',
+                    errorIdenticalGroup: 'Both passwords must be identical'
+                } } />
 
             <GenericFormField
                 formId="test2"

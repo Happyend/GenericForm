@@ -20,6 +20,7 @@ class GenericFormField extends React.Component {
             value: props.defaultValue || props.value || (props.hasOwnProperty('defaultEmptyValue') ? props.defaultEmptyValue : ''),
             showError: isRadioOrCheckbox(this.props), //force showError if radio or checkbox for firefox/safari onBlur
             showGroupError: false,
+            identicalGroupError: false,
         };
 
         if (isRadioOrCheckbox(this.props))
@@ -87,7 +88,7 @@ class GenericFormField extends React.Component {
         if (this.props.break)
             className += 'break ';
 
-        if (this.props.error || this.state.error || this.state.showGroupError)
+        if (this.props.error || this.state.error || this.state.showGroupError || this.state.identicalGroupError)
             className += 'has-error ';
 
         return className;
@@ -197,7 +198,11 @@ class GenericFormField extends React.Component {
           </div>;
         if (this.state.showGroupError && this.props.validation.errorGroup)
             return <div { ...adaAttributes } className="generic-form-error">
-              {this.props.validation.errorGroup}
+                {this.props.validation.errorGroup}
+            </div>;
+        if (this.state.identicalGroupError && this.props.validation.errorIdenticalGroup)
+            return <div { ...adaAttributes } className="generic-form-error">
+                {this.props.validation.errorIdenticalGroup}
             </div>;
         return null;
     }
@@ -221,6 +226,9 @@ class GenericFormField extends React.Component {
                 if (this.state.showGroupError) {
                     this.validateGroups();
                 }
+                if (this.state.identicalGroupError) {
+                    this.validateIdenticalGroups();
+                }
 
                 this.handleDisabledUntilValid();
             }
@@ -241,6 +249,8 @@ class GenericFormField extends React.Component {
             error: this.getError(),
             showError: true
         });
+
+        this.validateIdenticalGroups();
         if (typeof this.props.onBlur === 'function') this.props.onBlur(e);
     }
 
@@ -306,6 +316,23 @@ class GenericFormField extends React.Component {
 
         }
         return false;
+    }
+
+    validateIdenticalGroups() {
+        if (this.props.validation && this.props.validation.identicalGroup) {
+            const fields = GenericFormField.getFields(this.props.formId).filter(({ props }) =>
+                props.validation && props.validation.identicalGroup && props.validation.identicalGroup === this.props.validation.identicalGroup);
+            const value = this.getValue();
+            for (let i = 0, length = fields.length; i<length; i++) {
+                if (fields[i].getValue() !== value) {
+                    this.setIdenticalGroupError(true);
+                    fields[i].setIdenticalGroupError(true);
+                    return false;
+                }
+            }
+            fields.forEach(f => f.setIdenticalGroupError(false));
+        }
+        return true;
     }
 
     validate(silent) {
@@ -403,6 +430,12 @@ class GenericFormField extends React.Component {
         }
 
         return isValid;
+    }
+
+    setIdenticalGroupError(identicalGroupError) {
+        this.setState({
+            identicalGroupError
+        });
     }
 
     static getErrorFieldId(id){
