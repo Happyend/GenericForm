@@ -246,7 +246,8 @@
         value: props.defaultValue || props.value || (props.hasOwnProperty('defaultEmptyValue') ? props.defaultEmptyValue : ''),
         showError: isRadioOrCheckbox(_this.props),
         //force showError if radio or checkbox for firefox/safari onBlur
-        showGroupError: false
+        showGroupError: false,
+        identicalGroupError: false
       };
       if (isRadioOrCheckbox(_this.props)) _this.state.checked = _this.props.checked || false;
       _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -309,7 +310,7 @@
         }
 
         if (this.props.break) className += 'break ';
-        if (this.props.error || this.state.error || this.state.showGroupError) className += 'has-error ';
+        if (this.props.error || this.state.error || this.state.showGroupError || this.state.identicalGroupError) className += 'has-error ';
         return className;
       }
     }, {
@@ -412,6 +413,9 @@
         if (this.state.showGroupError && this.props.validation.errorGroup) return React.createElement("div", _extends({}, adaAttributes, {
           className: "generic-form-error"
         }), this.props.validation.errorGroup);
+        if (this.state.identicalGroupError && this.props.validation.errorIdenticalGroup) return React.createElement("div", _extends({}, adaAttributes, {
+          className: "generic-form-error"
+        }), this.props.validation.errorIdenticalGroup);
         return null;
       }
     }, {
@@ -435,6 +439,10 @@
             _this2.validateGroups();
           }
 
+          if (_this2.state.identicalGroupError) {
+            _this2.validateIdenticalGroups();
+          }
+
           _this2.handleDisabledUntilValid();
         });
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
@@ -455,6 +463,7 @@
           error: this.getError(),
           showError: true
         });
+        this.validateIdenticalGroups();
         if (typeof this.props.onBlur === 'function') this.props.onBlur(e);
       }
     }, {
@@ -522,6 +531,33 @@
         }
 
         return false;
+      }
+    }, {
+      key: "validateIdenticalGroups",
+      value: function validateIdenticalGroups() {
+        var _this3 = this;
+
+        if (this.props.validation && this.props.validation.identicalGroup) {
+          var fields = GenericFormField.getFields(this.props.formId).filter(function (_ref2) {
+            var props = _ref2.props;
+            return props.validation && props.validation.identicalGroup && props.validation.identicalGroup === _this3.props.validation.identicalGroup;
+          });
+          var value = this.getValue();
+
+          for (var i = 0, length = fields.length; i < length; i++) {
+            if (fields[i].getValue() !== value) {
+              this.setIdenticalGroupError(true);
+              fields[i].setIdenticalGroupError(true);
+              return false;
+            }
+          }
+
+          fields.forEach(function (f) {
+            return f.setIdenticalGroupError(false);
+          });
+        }
+
+        return true;
       }
     }, {
       key: "validate",
@@ -624,6 +660,13 @@
         }
 
         return isValid;
+      }
+    }, {
+      key: "setIdenticalGroupError",
+      value: function setIdenticalGroupError(identicalGroupError) {
+        this.setState({
+          identicalGroupError: identicalGroupError
+        });
       }
     }], [{
       key: "getErrorFieldId",
