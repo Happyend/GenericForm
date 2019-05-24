@@ -528,6 +528,14 @@
               }
             }
           }
+
+          if (this.props.validation.customErrorHandlers) {
+            for (var _key2 in this.props.validation.customErrorHandlers) {
+              if (this.props.validation.customErrorHandlers[_key2](value)) {
+                return _key2;
+              }
+            }
+          }
         }
 
         return false;
