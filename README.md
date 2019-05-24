@@ -86,6 +86,18 @@ the 'errorEmpty' string
 The string will be displayed if the field is empty and the mandatory boolean was set
 
 
+#### customErrorHandlers (object)
+The customErrorHandlers prop allows you to define functions that will check the 
+field's value and return the key you defined as an error if the check is **truthy**
+```
+<GenericFormField
+    validation={ {
+        customErrorHandlers: {
+            'Do not enter "Bad value"':  v => v === 'Bad value'
+        }
+    } } />
+```
+
 #### positiveRegex (object)
 The positiveRegex prop allows you to define props that will trigger errors when the value of the field
 **matches** the regex.

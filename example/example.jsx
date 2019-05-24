@@ -106,6 +106,18 @@ const App = () =>
                         'Field must contain a comma': ','
                     }
                 } } />
+            <p>Field with customErrorHandler</p>
+            <GenericFormField
+                formId="test"
+                type={GenericFormFieldTypes.TEXT}
+                id="test-bad-valuefield" name={"bad-value"}
+                label="Do not enter 'Bad value'"
+                validation={ {
+                    mandatory: true,
+                    customErrorHandlers: {
+                        'Do not enter "Bad value"':  v => v === 'Bad value'
+                    }
+                } } />
             <GenericFormField
                 formId="test"
                 type={GenericFormFieldTypes.SUBMIT}

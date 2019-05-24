@@ -314,6 +314,14 @@ class GenericFormField extends React.Component {
                 }
             }
 
+            if (this.props.validation.customErrorHandlers) {
+                for (let key in this.props.validation.customErrorHandlers) {
+                    if (this.props.validation.customErrorHandlers[key](value)) {
+                        return key;
+                    }
+                }
+            }
+
         }
         return false;
     }
