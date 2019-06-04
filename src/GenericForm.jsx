@@ -12,7 +12,7 @@ class GenericForm extends React.Component {
     }
 
     render() {
-        return <form onSubmit={ this._onSubmit } className={ 'generic-form '+(this.props.className ? this.props.className: '') }>
+        return <form id={this.props.id} onSubmit={ this._onSubmit } className={ 'generic-form '+(this.props.className ? this.props.className: '') }>
             { this.content() }
             { this.props.children }
         </form>;
@@ -69,6 +69,10 @@ class GenericForm extends React.Component {
         }
 
         return { ...values, ...checkboxes };
+    }
+
+    reset() {
+        GenericFormField.getFields(this.props.id).forEach(f => f.reset());
     }
 
 }

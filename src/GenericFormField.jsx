@@ -211,6 +211,7 @@ class GenericFormField extends React.Component {
         const stateUpdate = { };
         if (isRadioOrCheckbox(this.props)) {
             stateUpdate.checked = !this.state.checked;
+            if (this.props.type === GenericFormFieldTypes.RADIO) this.setOtherRadiosChecked(!stateUpdate.checked);
         } else {
             if (_extraTypes[this.props.type] && _extraTypes[this.props.type].onChangeGetValue)
                 stateUpdate.value = _extraTypes[this.props.type].onChangeGetValue(e);
@@ -234,6 +235,14 @@ class GenericFormField extends React.Component {
             }
         );
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
+    }
+
+    setOtherRadiosChecked(checked) {
+        GenericFormField.getFields(this.props.formId)
+          .filter(({ props: { type, name } }) => type === GenericFormFieldTypes.RADIO && name === this.props.name)
+          .forEach(
+              f => f.setState({ checked })
+          );
     }
 
     onFocus(e) {
@@ -444,6 +453,19 @@ class GenericFormField extends React.Component {
         this.setState({
             identicalGroupError
         });
+    }
+
+    reset() {
+        const state = {
+            showError: false,
+            error: false,
+            showGroupError: false,
+            identicalGroupError: false
+        };
+        if (isRadioOrCheckbox(this.props)) state.checked= this.props.checked || false;
+        else state.value = this.props.defaultValue || (this.props.hasOwnProperty('defaultEmptyValue') ? this.props.defaultEmptyValue : '');
+
+        this.setState(state)
     }
 
     static getErrorFieldId(id){
