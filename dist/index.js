@@ -427,6 +427,7 @@
 
         if (isRadioOrCheckbox(this.props)) {
           stateUpdate.checked = !this.state.checked;
+          if (this.props.type === GenericFormFieldTypes.RADIO) this.setOtherRadiosChecked(!stateUpdate.checked);
         } else {
           if (_extraTypes[this.props.type] && _extraTypes[this.props.type].onChangeGetValue) stateUpdate.value = _extraTypes[this.props.type].onChangeGetValue(e);else stateUpdate.value = this.getValue();
           if (this.props.maxLength) stateUpdate.value = stateUpdate.value.substr(0, this.props.maxLength);
@@ -446,6 +447,22 @@
           _this2.handleDisabledUntilValid();
         });
         if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
+      }
+    }, {
+      key: "setOtherRadiosChecked",
+      value: function setOtherRadiosChecked(checked) {
+        var _this3 = this;
+
+        GenericFormField.getFields(this.props.formId).filter(function (_ref2) {
+          var _ref2$props = _ref2.props,
+              type = _ref2$props.type,
+              name = _ref2$props.name;
+          return type === GenericFormFieldTypes.RADIO && name === _this3.props.name;
+        }).forEach(function (f) {
+          return f.setState({
+            checked: checked
+          });
+        });
       }
     }, {
       key: "onFocus",
@@ -543,12 +560,12 @@
     }, {
       key: "validateIdenticalGroups",
       value: function validateIdenticalGroups() {
-        var _this3 = this;
+        var _this4 = this;
 
         if (this.props.validation && this.props.validation.identicalGroup) {
-          var fields = GenericFormField.getFields(this.props.formId).filter(function (_ref2) {
-            var props = _ref2.props;
-            return props.validation && props.validation.identicalGroup && props.validation.identicalGroup === _this3.props.validation.identicalGroup;
+          var fields = GenericFormField.getFields(this.props.formId).filter(function (_ref3) {
+            var props = _ref3.props;
+            return props.validation && props.validation.identicalGroup && props.validation.identicalGroup === _this4.props.validation.identicalGroup;
           });
           var value = this.getValue();
 
@@ -676,6 +693,18 @@
           identicalGroupError: identicalGroupError
         });
       }
+    }, {
+      key: "reset",
+      value: function reset() {
+        var state = {
+          showError: false,
+          error: false,
+          showGroupError: false,
+          identicalGroupError: false
+        };
+        if (isRadioOrCheckbox(this.props)) state.checked = this.props.checked || false;else state.value = this.props.defaultValue || (this.props.hasOwnProperty('defaultEmptyValue') ? this.props.defaultEmptyValue : '');
+        this.setState(state);
+      }
     }], [{
       key: "getErrorFieldId",
       value: function getErrorFieldId(id) {
@@ -760,6 +789,7 @@
       key: "render",
       value: function render() {
         return React.createElement("form", {
+          id: this.props.id,
           onSubmit: this._onSubmit,
           className: 'generic-form ' + (this.props.className ? this.props.className : '')
         }, this.content(), this.props.children);
@@ -829,6 +859,13 @@
         }
 
         return _objectSpread({}, values, checkboxes);
+      }
+    }, {
+      key: "reset",
+      value: function reset() {
+        GenericFormField.getFields(this.props.id).forEach(function (f) {
+          return f.reset();
+        });
       }
     }]);
 
