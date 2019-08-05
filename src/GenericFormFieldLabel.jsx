@@ -6,11 +6,12 @@ const GenericFormFieldLabel = ({
     label,
     type,
     labelAsDefault,
-    value
+    value,
+    isRequired,
 }) =>
     label && (type !== GenericFormFieldTypes.SELECT || !labelAsDefault || value)
         ? <label htmlFor={id}>
-            {label}
+            {label} {isRequired && '*'}
         </label>
         : null;
 

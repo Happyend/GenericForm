@@ -95,12 +95,15 @@ class GenericFormField extends React.Component {
   }
 
   render() {
-
     if (this.props.type === GenericFormFieldTypes.HIDDEN)
       return this.renderGenericFormField(this.props);
 
     return <div className={this.getClassName()}>
-      <GenericFormFieldLabel {...this.props} value={this.state.value}/>
+      <GenericFormFieldLabel
+        {...this.props}
+        isRequired={ this.props.validation && this.props.validation.mandatory }
+        value={this.state.value}
+      />
       {this.renderGenericFormField()}
       {this.renderError()}
       {this.props.after}

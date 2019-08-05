@@ -218,10 +218,11 @@
         label = _ref.label,
         type = _ref.type,
         labelAsDefault = _ref.labelAsDefault,
-        value = _ref.value;
+        value = _ref.value,
+        isRequired = _ref.isRequired;
     return label && (type !== GenericFormFieldTypes.SELECT || !labelAsDefault || value) ? React.createElement("label", {
       htmlFor: id
-    }, label) : null;
+    }, label, " ", isRequired && '*') : null;
   };
 
   var _genericForms = {};
@@ -320,6 +321,7 @@
         return React.createElement("div", {
           className: this.getClassName()
         }, React.createElement(GenericFormFieldLabel, _extends({}, this.props, {
+          isRequired: this.props.validation && this.props.validation.mandatory,
           value: this.state.value
         })), this.renderGenericFormField(), this.renderError(), this.props.after);
       }
