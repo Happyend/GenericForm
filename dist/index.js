@@ -223,7 +223,7 @@
         validation = _ref.validation;
     return label && (type !== GenericFormFieldTypes.SELECT || !labelAsDefault || value) ? React.createElement("label", {
       htmlFor: id
-    }, label, ' ', validation && validation.mandatory && React.createElement("span", {
+    }, label, validation && validation.mandatory && React.createElement("span", {
       className: "required-text"
     }, requiredSuffix)) : null;
   };
