@@ -6,11 +6,17 @@ const GenericFormFieldLabel = ({
     label,
     type,
     labelAsDefault,
-    value
+    value,
+    requiredSuffix,
+    validation,
 }) =>
     label && (type !== GenericFormFieldTypes.SELECT || !labelAsDefault || value)
         ? <label htmlFor={id}>
             {label}
+            {
+              (validation && validation.mandatory) &&
+                <span className="required-text">{requiredSuffix}</span>
+            }
         </label>
         : null;
 

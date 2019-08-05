@@ -5,7 +5,7 @@
 [npm-image]: https://img.shields.io/npm/v/generic-form.svg
 [npm-url]: https://www.npmjs.com/package/generic-form
 
-GenericForm is a React form validation plugin. 
+GenericForm is a React form validation plugin.
 Each form field can use a validation prop to define what format is expected.
 
 ## Installation
@@ -25,7 +25,7 @@ into the form by specifying the formId prop.
 #### A GenericForm component that handles its own fields
 
 ```jsx
-<GenericForm 
+<GenericForm
     id="my-form"
     fields={ [
         {
@@ -54,21 +54,21 @@ into the form by specifying the formId prop.
 #### A GenericForm that uses GenericFormField components
 ```jsx
 <GenericForm id="my-form">
-    <GenericFormField 
+    <GenericFormField
         formId="my-form"
-        type={GenericFormFieldType.EMAIL} 
-        name="email" 
+        type={GenericFormFieldType.EMAIL}
+        name="email"
         id="my-form-email"
         validation={{ mandatory: true}} />
-    <GenericFormField 
+    <GenericFormField
         formId="my-form"
-        type={GenericFormFieldType.PASSWORD} 
-        name="password" 
+        type={GenericFormFieldType.PASSWORD}
+        name="password"
         id="my-form-password"
         validation={{ mandatory: true}} />
-    <GenericFormField 
+    <GenericFormField
         formId="my-form"
-        type={GenericFormFieldType.SUBMIT} 
+        type={GenericFormFieldType.SUBMIT}
         value="Login" />
 </GenericForm>
 ```
@@ -87,7 +87,7 @@ The string will be displayed if the field is empty and the mandatory boolean was
 
 
 #### customErrorHandlers (object)
-The customErrorHandlers prop allows you to define functions that will check the 
+The customErrorHandlers prop allows you to define functions that will check the
 field's value and return the key you defined as an error if the check is **truthy**
 ```
 <GenericFormField
@@ -136,7 +136,7 @@ the errorGroup prop
 ```
 
 #### identicalGroup (string)
-The identicalGroup prop marks a field as part of a group where all values must be equal. 
+The identicalGroup prop marks a field as part of a group where all values must be equal.
 If the requirement isn't met the field will display the errorIdenticalGroup prop.
 ```
 <GenericFormField
@@ -163,6 +163,9 @@ This crops the fields value to a given length (even for non number types)
 #### defaultEmptyValue (any)
 GenericFormField is always controlled by default if no value or defaultValue is set we use
 an empty string, however you may override this behaviour with the defaultEmptyValue prop
+
+#### requiredLabelSuffix (string)
+Add a string to the label (can be usefull for accessibility and/or to show that an input is required)
 
 ## Using external libraries
 
@@ -208,6 +211,15 @@ By registering an extra type you may then use the component in your forms by sim
     type='mask'
     mask={[/\d/, /\d/, /\d/, /\d/,'-', /\d/, /\d/]} />
 ```
+
+### setRequiredLabelSuffix
+
+This method allows you to set a global suffix for required labels
+```
+GenericFormField.setRequiredLabelSuffix('*');
+```
+
+You can override this value for any input by using the requiredLabelSuffix props
 
 
 ## Scripts
