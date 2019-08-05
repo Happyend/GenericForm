@@ -6,7 +6,7 @@ import {GenericFormFieldTypes, GenericFormFieldDataTypes} from './types';
 
 const _genericForms = {};
 const _extraTypes = {};
-
+let _requiredLabelSuffix = '';
 
 class GenericFormField extends React.Component {
 
@@ -100,7 +100,11 @@ class GenericFormField extends React.Component {
       return this.renderGenericFormField(this.props);
 
     return <div className={this.getClassName()}>
-      <GenericFormFieldLabel {...this.props} value={this.state.value}/>
+      <GenericFormFieldLabel
+        {...this.props}
+        requiredSuffix={this.props.requiredLabelSuffix || _requiredLabelSuffix}
+        value={this.state.value}
+      />
       {this.renderGenericFormField()}
       {this.renderError()}
       {this.props.after}
@@ -491,6 +495,10 @@ class GenericFormField extends React.Component {
       _extraTypes[type] = options;
   }
 
+  static setRequiredLabelSuffix(suffix) {
+    _requiredLabelSuffix = suffix;
+  }
+
 }
 
 const validationShape = {
@@ -520,7 +528,8 @@ export const GenericFormFieldShape = {
   defaultEmptyValue: PropTypes.any,
   labelAsDefault: PropTypes.bool,
   after: PropTypes.node,
-  disableUntilValid: PropTypes.bool
+  disableUntilValid: PropTypes.bool,
+  requiredLabelSuffix: PropTypes.string,
 };
 
 GenericFormFieldLabel.propTypes = GenericFormFieldShape;

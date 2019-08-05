@@ -5,9 +5,11 @@ import GenericFormField from '../src/GenericFormField';
 
 class App extends React.Component {
 
+
   constructor(props) {
     super(props);
     this.form2Ref = React.createRef();
+    GenericFormField.setRequiredLabelSuffix('*');
   }
 
   render() {
@@ -26,6 +28,7 @@ class App extends React.Component {
                        name: 'firstname',
                        id: 'test-firstname-field',
                        label: 'Firstname',
+                       requiredLabelSuffix: 'This field is mandatory',
                        validation: {
                          mandatory: true,
                          errorEmpty: 'Firstname is mandatory'

@@ -218,14 +218,19 @@
         label = _ref.label,
         type = _ref.type,
         labelAsDefault = _ref.labelAsDefault,
-        value = _ref.value;
+        value = _ref.value,
+        requiredSuffix = _ref.requiredSuffix,
+        validation = _ref.validation;
     return label && (type !== GenericFormFieldTypes.SELECT || !labelAsDefault || value) ? React.createElement("label", {
       htmlFor: id
-    }, label) : null;
+    }, label, ' ', validation && validation.mandatory && React.createElement("span", {
+      className: "required-text"
+    }, requiredSuffix)) : null;
   };
 
   var _genericForms = {};
   var _extraTypes = {};
+  var _requiredLabelSuffix = '';
 
   var GenericFormField =
   /*#__PURE__*/
@@ -320,6 +325,7 @@
         return React.createElement("div", {
           className: this.getClassName()
         }, React.createElement(GenericFormFieldLabel, _extends({}, this.props, {
+          requiredSuffix: this.props.requiredLabelSuffix || _requiredLabelSuffix,
           value: this.state.value
         })), this.renderGenericFormField(), this.renderError(), this.props.after);
       }
@@ -733,6 +739,11 @@
       value: function registerExtraType(type, options) {
         if (!_extraTypes[type]) _extraTypes[type] = options;
       }
+    }, {
+      key: "setRequiredLabelSuffix",
+      value: function setRequiredLabelSuffix(suffix) {
+        _requiredLabelSuffix = suffix;
+      }
     }]);
 
     return GenericFormField;
@@ -764,7 +775,8 @@
     defaultEmptyValue: PropTypes.any,
     labelAsDefault: PropTypes.bool,
     after: PropTypes.node,
-    disableUntilValid: PropTypes.bool
+    disableUntilValid: PropTypes.bool,
+    requiredLabelSuffix: PropTypes.string
   };
   GenericFormFieldLabel.propTypes = GenericFormFieldShape;
   GenericFormField.propTypes = GenericFormFieldShape;
