@@ -330,6 +330,11 @@
         })), this.renderGenericFormField(), this.renderError(), this.props.after);
       }
     }, {
+      key: "renderRequiredSuffix",
+      value: function renderRequiredSuffix(validation, requiredSuffix) {
+        return validation && validation.mandatory ? requiredSuffix : '';
+      }
+    }, {
       key: "renderGenericFormField",
       value: function renderGenericFormField() {
         // destructure all non native props to avoid passing them with the rest operator
@@ -350,7 +355,8 @@
             fieldType = _this$props.fieldType,
             disableUntilValid = _this$props.disableUntilValid,
             disabled = _this$props.disabled,
-            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType", "disableUntilValid", "disabled"]);
+            requiredLabelSuffix = _this$props.requiredLabelSuffix,
+            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType", "disableUntilValid", "disabled", "requiredLabelSuffix"]);
 
         var props = _objectSpread({}, nativeProps, {
           value: this.state.value,
@@ -379,7 +385,7 @@
           case GenericFormFieldTypes.SELECT:
             return React.createElement("select", props, labelAsDefault ? React.createElement("option", {
               value: ""
-            }, label) : null, options.map(function (_ref, i) {
+            }, label, this.renderRequiredSuffix(validation, requiredLabelSuffix || _requiredLabelSuffix)) : null, options.map(function (_ref, i) {
               var label = _ref.label,
                   value = _ref.value,
                   isPlaceholder = _ref.isPlaceholder;
