@@ -537,6 +537,7 @@ export const GenericFormFieldShape = {
   after: PropTypes.node,
   disableUntilValid: PropTypes.bool,
   requiredLabelSuffix: PropTypes.string,
+  autoComplete: PropTypes.string,
 };
 
 GenericFormFieldLabel.propTypes = GenericFormFieldShape;

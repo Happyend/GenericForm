@@ -62,35 +62,20 @@
     return _extends.apply(this, arguments);
   }
 
-  function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-      keys.push.apply(keys, symbols);
-    }
-
-    return keys;
-  }
-
-  function _objectSpread2(target) {
+  function _objectSpread(target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i] != null ? arguments[i] : {};
+      var ownKeys = Object.keys(source);
 
-      if (i % 2) {
-        ownKeys(source, true).forEach(function (key) {
-          _defineProperty(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys(source).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
+      if (typeof Object.getOwnPropertySymbols === 'function') {
+        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
+          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
+        }));
       }
+
+      ownKeys.forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
     }
 
     return target;
@@ -270,10 +255,10 @@
         identicalGroupError: false
       };
       if (isRadioOrCheckbox(_this.props)) _this.state.checked = _this.props.checked || false;
-      _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_this));
-      _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_this));
-      _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
-      _this.getValue = _this.getValue.bind(_assertThisInitialized(_this));
+      _this.onFocus = _this.onFocus.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+      _this.onBlur = _this.onBlur.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+      _this.onChange = _this.onChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+      _this.getValue = _this.getValue.bind(_assertThisInitialized(_assertThisInitialized(_this)));
       _this.el = React.createRef();
       return _this;
     }
@@ -329,7 +314,7 @@
           }
         }
 
-        if (this.props["break"]) className += 'break ';
+        if (this.props.break) className += 'break ';
         if (this.props.error || this.state.error || this.state.showGroupError || this.state.identicalGroupError) className += 'has-error ';
         return className;
       }
@@ -373,7 +358,7 @@
             requiredLabelSuffix = _this$props.requiredLabelSuffix,
             nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType", "disableUntilValid", "disabled", "requiredLabelSuffix"]);
 
-        var props = _objectSpread2({}, nativeProps, {
+        var props = _objectSpread({}, nativeProps, {
           value: this.state.value,
           onChange: this.onChange,
           onFocus: this.onFocus,
@@ -797,7 +782,8 @@
     labelAsDefault: PropTypes.bool,
     after: PropTypes.node,
     disableUntilValid: PropTypes.bool,
-    requiredLabelSuffix: PropTypes.string
+    requiredLabelSuffix: PropTypes.string,
+    autocomplete: PropTypes.string
   };
   GenericFormFieldLabel.propTypes = GenericFormFieldShape;
   GenericFormField.propTypes = GenericFormFieldShape;
@@ -814,7 +800,7 @@
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(GenericForm).call(this, props));
       _this.fields = [];
-      _this._onSubmit = _this._onSubmit.bind(_assertThisInitialized(_this));
+      _this._onSubmit = _this._onSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
       return _this;
     }
 
@@ -891,7 +877,7 @@
           }
         }
 
-        return _objectSpread2({}, values, {}, checkboxes);
+        return _objectSpread({}, values, checkboxes);
       }
     }, {
       key: "reset",
@@ -928,9 +914,9 @@
   };
 
   exports.GenericFormField = GenericFormField;
-  exports.GenericFormFieldDataTypes = GenericFormFieldDataTypes;
-  exports.GenericFormFieldTypes = GenericFormFieldTypes;
   exports.GenericFormFields = GenericFormFields;
+  exports.GenericFormFieldTypes = GenericFormFieldTypes;
+  exports.GenericFormFieldDataTypes = GenericFormFieldDataTypes;
   exports.default = GenericForm;
 
   Object.defineProperty(exports, '__esModule', { value: true });

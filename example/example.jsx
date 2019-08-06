@@ -39,6 +39,7 @@ class App extends React.Component {
                        name: 'lastname',
                        id: 'test-lastname-field',
                        label: 'Lastname',
+                       autoComplete: 'family-name',
                        validation: {
                          mandatory: true
                        }
@@ -48,6 +49,7 @@ class App extends React.Component {
                        name: 'title',
                        id: 'test-title-field',
                        label: 'Title',
+                       autoComplete: 'honorific-prefix',
                        labelAsDefault: true,
                        options: [
                          {
