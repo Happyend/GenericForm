@@ -111,6 +111,10 @@ class GenericFormField extends React.Component {
     </div>;
   }
 
+  renderRequiredSuffix(validation, requiredSuffix) {
+    return validation && validation.mandatory ? requiredSuffix : '';
+  }
+
   renderGenericFormField() {
 
     // destructure all non native props to avoid passing them with the rest operator
@@ -131,6 +135,7 @@ class GenericFormField extends React.Component {
       fieldType,
       disableUntilValid,
       disabled,
+      requiredLabelSuffix,
       ...nativeProps
     } = this.props;
 
@@ -162,7 +167,9 @@ class GenericFormField extends React.Component {
       case GenericFormFieldTypes.SELECT:
         return <select {...props}>
           {labelAsDefault ?
-            <option value="">{label}</option>
+            <option value="">
+              {label}{this.renderRequiredSuffix(validation, requiredLabelSuffix || _requiredLabelSuffix)}
+            </option>
             : null}
           {
             options.map(({label, value, isPlaceholder}, i) =>

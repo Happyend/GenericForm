@@ -48,6 +48,7 @@ class App extends React.Component {
                        name: 'title',
                        id: 'test-title-field',
                        label: 'Title',
+                       labelAsDefault: true,
                        options: [
                          {
                            label: 'Pick',
