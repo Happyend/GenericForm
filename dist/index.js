@@ -832,8 +832,10 @@
       value: function content() {
         var _this2 = this;
 
-        return (this.props.fields || []).map(function (f, i) {
-          return f ? React.createElement(GenericFormField, _extends({
+        if (!this.props.fields || !this.props.fields.length) return;
+        var FieldComponent = this.props.FieldComponent || GenericFormField;
+        return this.props.fields.map(function (f, i) {
+          return f ? React.createElement(FieldComponent, _extends({
             formId: _this2.props.id,
             key: i
           }, f)) : null;
@@ -907,6 +909,7 @@
 
   GenericForm.propTypes = {
     id: PropTypes.string,
+    FieldComponent: PropTypes.elementType,
     onError: PropTypes.func,
     onSubmit: PropTypes.func,
     children: PropTypes.node,

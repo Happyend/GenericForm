@@ -20,8 +20,12 @@ class GenericForm extends React.Component {
   }
 
   content() {
-    return (this.props.fields || []).map((f, i) => f ?
-      <GenericFormField formId={this.props.id} key={i} {...f} /> : null);
+    if (!this.props.fields || !this.props.fields.length) return;
+
+    const FieldComponent = this.props.FieldComponent || GenericFormField;
+    return this.props.fields.map((f, i) => f
+      ? <FieldComponent formId={this.props.id} key={i} {...f} />
+      : null);
   }
 
   _onSubmit(e) {
@@ -80,6 +84,7 @@ class GenericForm extends React.Component {
 
 GenericForm.propTypes = {
   id: PropTypes.string,
+  FieldComponent: PropTypes.elementType,
   onError: PropTypes.func,
   onSubmit: PropTypes.func,
   children: PropTypes.node,

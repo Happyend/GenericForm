@@ -221,6 +221,8 @@ GenericFormField.setRequiredLabelSuffix('*');
 
 You can override this value for any input by using the requiredLabelSuffix props
 
+## Using custom Field component with GenericForm
+You can give the GenericForm a FieldComponent prop that will be used when giving the GenericForm an array of fields
 
 ## Scripts
 
