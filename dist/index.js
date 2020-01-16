@@ -844,15 +844,9 @@
     }, {
       key: "_onSubmit",
       value: function _onSubmit(e) {
-        var fields = GenericFormField.getFields(this.props.id);
-
-        if (fields.length) {
-          var isValid = fields[0].validateFields();
-
-          if (!isValid) {
-            e.preventDefault();
-            return;
-          }
+        if (!this.isValid()) {
+          e.preventDefault();
+          return;
         }
 
         if (typeof this.props.onSubmit === 'function') this.props.onSubmit(e, this.getValues());
@@ -894,6 +888,12 @@
         }
 
         return _objectSpread2({}, values, {}, checkboxes);
+      }
+    }, {
+      key: "isValid",
+      value: function isValid() {
+        var fields = GenericFormField.getFields(this.props.id);
+        return !fields.length || fields[0].validateFields();
       }
     }, {
       key: "reset",
