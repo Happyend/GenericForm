@@ -2,7 +2,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('prop-types')) :
   typeof define === 'function' && define.amd ? define(['exports', 'react', 'prop-types'], factory) :
   (global = global || self, factory(global.GenericForm = {}, global.React, global.PropTypes));
-}(this, function (exports, React, PropTypes) { 'use strict';
+}(this, (function (exports, React, PropTypes) { 'use strict';
 
   React = React && React.hasOwnProperty('default') ? React['default'] : React;
   PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
@@ -81,13 +81,13 @@
       var source = arguments[i] != null ? arguments[i] : {};
 
       if (i % 2) {
-        ownKeys(source, true).forEach(function (key) {
+        ownKeys(Object(source), true).forEach(function (key) {
           _defineProperty(target, key, source[key]);
         });
       } else if (Object.getOwnPropertyDescriptors) {
         Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
       } else {
-        ownKeys(source).forEach(function (key) {
+        ownKeys(Object(source)).forEach(function (key) {
           Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
         });
       }
@@ -938,4 +938,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-}));
+})));
