@@ -7,22 +7,6 @@
   React = React && React.hasOwnProperty('default') ? React['default'] : React;
   PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
 
-  function _typeof(obj) {
-    "@babel/helpers - typeof";
-
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function (obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function (obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-
-    return _typeof(obj);
-  }
-
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -332,7 +316,7 @@
         if (this.state.isFocused) className += 'is-focused ';
         if (this.state.checked) className += 'is-checked ';
         if (typeof this.state.value !== 'undefined' && this.state.value !== '') className += 'has-value ';
-        if (_typeof(this.props.disabled)) className += 'is-disabled ';
+        if (this.props.disabled) className += 'is-disabled ';
 
         if (this.props.size) {
           switch (this.props.size) {
