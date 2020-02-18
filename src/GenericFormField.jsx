@@ -74,7 +74,7 @@ class GenericFormField extends React.Component {
     if (this.state.isFocused) className += 'is-focused ';
     if (this.state.checked) className += 'is-checked ';
     if (typeof this.state.value !== 'undefined' && this.state.value !== '') className += 'has-value ';
-    if (typeof this.props.disabled) className += 'is-disabled ';
+    if (this.props.disabled) className += 'is-disabled ';
     if (this.props.size) {
       switch (this.props.size) {
         case 'half':
