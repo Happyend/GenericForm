@@ -503,12 +503,13 @@
     }, {
       key: "onBlur",
       value: function onBlur(e) {
+        var notValidOnBlur = this.props.validation && this.props.validation.validateOnBlur === false;
         this.setState({
           isFocused: false,
-          error: this.getError(),
+          error: notValidOnBlur ? false : this.getError(),
           showError: true
         });
-        this.validateIdenticalGroups();
+        if (!notValidOnBlur) this.validateIdenticalGroups();
         if (typeof this.props.onBlur === 'function') this.props.onBlur(e);
       }
     }, {
@@ -778,7 +779,8 @@
     errorEmpty: PropTypes.string,
     group: PropTypes.string,
     groupMin: PropTypes.number,
-    errorGroup: PropTypes.string
+    errorGroup: PropTypes.string,
+    validateOnBlur: PropTypes.bool
   };
   var GenericFormFieldShape = {
     checked: PropTypes.bool,

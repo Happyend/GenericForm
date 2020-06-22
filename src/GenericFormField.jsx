@@ -265,13 +265,15 @@ class GenericFormField extends React.Component {
   }
 
   onBlur(e) {
+    const notValidOnBlur = this.props.validation && this.props.validation.validateOnBlur === false;
     this.setState({
       isFocused: false,
-      error: this.getError(),
+      error: notValidOnBlur ? false : this.getError(),
       showError: true
     });
 
-    this.validateIdenticalGroups();
+    if (!notValidOnBlur)
+      this.validateIdenticalGroups();
     if (typeof this.props.onBlur === 'function') this.props.onBlur(e);
   }
 
@@ -516,7 +518,8 @@ const validationShape = {
   errorEmpty: PropTypes.string,
   group: PropTypes.string,
   groupMin: PropTypes.number,
-  errorGroup: PropTypes.string
+  errorGroup: PropTypes.string,
+  validateOnBlur: PropTypes.bool
 };
 
 export const GenericFormFieldShape = {

@@ -31,6 +31,7 @@ class App extends React.Component {
                        requiredLabelSuffix: 'This field is mandatory',
                        validation: {
                          mandatory: true,
+                         validateOnBlur: false,
                          errorEmpty: 'Firstname is mandatory'
                        }
                      },
