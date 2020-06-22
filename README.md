@@ -81,6 +81,9 @@ into the form by specifying the formId prop.
  marks the field as mandatory, if value isn't set by user it will display
 the 'errorEmpty' string
 
+#### validateOnBlur (boolean, default: true)
+ by default, genericForm validate each field on Blur event
+
 
 #### errorEmpty (string)
 The string will be displayed if the field is empty and the mandatory boolean was set
