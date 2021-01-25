@@ -26,50 +26,55 @@ into the form by specifying the formId prop.
 
 ```jsx
 <GenericForm
-    id="my-form"
-    fields={ [
-        {
-            type: GenericFormFieldType.EMAIL,
-            id: 'my-form-email',
-            name: 'email',
-            validation: {
-                mandatory: true
-            }
-        },
-        {
-            type: GenericFormFieldType.PASSWORD,
-            id: 'my-form-password',
-            name: 'password',
-            validation: {
-                mandatory: true
-            }
-        },
-        {
-            type: GenericFormFieldType.SUBMIT,
-            value: 'Login'
-        }
-    ] }
-    />
+  id="my-form"
+  fields={[
+    {
+      type: GenericFormFieldType.EMAIL,
+      id: "my-form-email",
+      name: "email",
+      validation: {
+        mandatory: true,
+      },
+    },
+    {
+      type: GenericFormFieldType.PASSWORD,
+      id: "my-form-password",
+      name: "password",
+      validation: {
+        mandatory: true,
+      },
+    },
+    {
+      type: GenericFormFieldType.SUBMIT,
+      value: "Login",
+    },
+  ]}
+/>
 ```
+
 #### A GenericForm that uses GenericFormField components
+
 ```jsx
 <GenericForm id="my-form">
-    <GenericFormField
-        formId="my-form"
-        type={GenericFormFieldType.EMAIL}
-        name="email"
-        id="my-form-email"
-        validation={{ mandatory: true}} />
-    <GenericFormField
-        formId="my-form"
-        type={GenericFormFieldType.PASSWORD}
-        name="password"
-        id="my-form-password"
-        validation={{ mandatory: true}} />
-    <GenericFormField
-        formId="my-form"
-        type={GenericFormFieldType.SUBMIT}
-        value="Login" />
+  <GenericFormField
+    formId="my-form"
+    type={GenericFormFieldType.EMAIL}
+    name="email"
+    id="my-form-email"
+    validation={{ mandatory: true }}
+  />
+  <GenericFormField
+    formId="my-form"
+    type={GenericFormFieldType.PASSWORD}
+    name="password"
+    id="my-form-password"
+    validation={{ mandatory: true }}
+  />
+  <GenericFormField
+    formId="my-form"
+    type={GenericFormFieldType.SUBMIT}
+    value="Login"
+  />
 </GenericForm>
 ```
 
@@ -78,20 +83,23 @@ into the form by specifying the formId prop.
 ### Validation Object
 
 #### mandatory (boolean)
- marks the field as mandatory, if value isn't set by user it will display
+
+marks the field as mandatory, if value isn't set by user it will display
 the 'errorEmpty' string
 
 #### validateOnBlur (boolean, default: true)
- by default, genericForm validate each field on Blur event
 
+by default, genericForm validate each field on Blur event
 
 #### errorEmpty (string)
+
 The string will be displayed if the field is empty and the mandatory boolean was set
 
-
 #### customErrorHandlers (object)
+
 The customErrorHandlers prop allows you to define functions that will check the
 field's value and return the key you defined as an error if the check is **truthy**
+
 ```
 <GenericFormField
     validation={ {
@@ -102,8 +110,10 @@ field's value and return the key you defined as an error if the check is **truth
 ```
 
 #### positiveRegex (object)
+
 The positiveRegex prop allows you to define props that will trigger errors when the value of the field
 **matches** the regex.
+
 ```
 <GenericFormField
     validation={ {
@@ -114,8 +124,10 @@ The positiveRegex prop allows you to define props that will trigger errors when 
 ```
 
 #### negativeRegex (object)
+
 The negativeRegex prop allows you to define props that will trigger errors when the value of the field
 **doesn't match** the regex.
+
 ```
 <GenericFormField
     validation={ {
@@ -126,9 +138,11 @@ The negativeRegex prop allows you to define props that will trigger errors when 
 ```
 
 #### group (string)
+
 The group prop marks a field as part of a group, at least one (or groupMin) fields in a group
 should be valid for the form to be validated, if the requirement isn't met the field will display
 the errorGroup prop
+
 ```
 <GenericFormField
     validation={ {
@@ -139,8 +153,10 @@ the errorGroup prop
 ```
 
 #### identicalGroup (string)
+
 The identicalGroup prop marks a field as part of a group where all values must be equal.
 If the requirement isn't met the field will display the errorIdenticalGroup prop.
+
 ```
 <GenericFormField
     validation={ {
@@ -150,7 +166,9 @@ If the requirement isn't met the field will display the errorIdenticalGroup prop
 ```
 
 #### disableUntilValid
+
 This prop disables a field until all fields in the form are valid:
+
 ```
 <GenericFormField
     formId="test"
@@ -161,28 +179,42 @@ This prop disables a field until all fields in the form are valid:
 ## Other props
 
 #### maxLength (number)
+
 This crops the fields value to a given length (even for non number types)
 
 #### defaultEmptyValue (any)
+
 GenericFormField is always controlled by default if no value or defaultValue is set we use
 an empty string, however you may override this behaviour with the defaultEmptyValue prop
 
 #### requiredLabelSuffix (string)
+
 Add a string to the label (can be usefull for accessibility and/or to show that an input is required)
+
+### outputEmptyFields(boolean)
+
+If set to true, empty fields will be appended to form data output
 
 ## Using external libraries
 
 The package supports external library components through the GenericFormField static method 'registerExtraType'.
+
 ### registerExtraType arguments
 
 #### type (string)
+
 A string to identify the new GenericFormField type
 
 #### customComponent methods (object)
+
 An object that has two methods, render and getValue:
+
 ##### render(libraryProps, componentProps, libraryState)
+
 The render method should return the custom component.
+
 ##### getValue
+
 A method scoped to the component that allows access to component props and should return the component value.
 
 ### registerExtraType example
@@ -206,7 +238,9 @@ GenericFormField.registerExtraType('mask', {
   },
 });
 ```
+
 By registering an extra type you may then use the component in your forms by simply using the string you registered:
+
 ```
 <GenericFormField
     id='masked-field'
@@ -218,6 +252,7 @@ By registering an extra type you may then use the component in your forms by sim
 ### setRequiredLabelSuffix
 
 This method allows you to set a global suffix for required labels
+
 ```
 GenericFormField.setRequiredLabelSuffix('*');
 ```
@@ -225,6 +260,7 @@ GenericFormField.setRequiredLabelSuffix('*');
 You can override this value for any input by using the requiredLabelSuffix props
 
 ## Using custom Field component with GenericForm
+
 You can give the GenericForm a FieldComponent prop that will be used when giving the GenericForm an array of fields
 
 ## Scripts
@@ -232,11 +268,13 @@ You can give the GenericForm a FieldComponent prop that will be used when giving
 ### Running the example form
 
 An example is provided with the repository, you may start the parcel dev server by running the following command:
+
 ```
 $ yarn example
 ```
 
 ### Building the module
+
 ```
 $ yarn build
 ```

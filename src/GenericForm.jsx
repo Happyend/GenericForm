@@ -43,7 +43,7 @@ class GenericForm extends React.Component {
     const values = GenericFormField.getFields(this.props.id).reduce((acc, f) => {
       let val = f.getValue();
       if (!isRadioOrCheckbox(f.props)) {
-        if (val !== '' && val !== null) acc[f.props.name] = f.getValue();
+        if (this.props.outputEmptyFields || (val !== '' && val !== null)) acc[f.props.name] = val;
       } else {
         if (!checkboxes[f.props.name]) {
           checkboxes[f.props.name] = [];
@@ -86,6 +86,7 @@ class GenericForm extends React.Component {
 GenericForm.propTypes = {
   id: PropTypes.string,
   FieldComponent: PropTypes.elementType,
+  outputEmptyFields: PropTypes.boolean,
   onError: PropTypes.func,
   onSubmit: PropTypes.func,
   children: PropTypes.node,
