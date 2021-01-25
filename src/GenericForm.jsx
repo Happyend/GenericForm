@@ -86,7 +86,7 @@ class GenericForm extends React.Component {
 GenericForm.propTypes = {
   id: PropTypes.string,
   FieldComponent: PropTypes.elementType,
-  outputEmptyFields: PropTypes.boolean,
+  outputEmptyFields: PropTypes.bool,
   onError: PropTypes.func,
   onSubmit: PropTypes.func,
   children: PropTypes.node,
