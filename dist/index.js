@@ -857,12 +857,14 @@
     }, {
       key: "getValues",
       value: function getValues() {
+        var _this3 = this;
+
         var checkboxes = {};
         var values = GenericFormField.getFields(this.props.id).reduce(function (acc, f) {
           var val = f.getValue();
 
           if (!isRadioOrCheckbox(f.props)) {
-            if (val !== '' && val !== null) acc[f.props.name] = f.getValue();
+            if (_this3.props.outputEmptyFields || val !== '' && val !== null) acc[f.props.name] = val;
           } else {
             if (!checkboxes[f.props.name]) {
               checkboxes[f.props.name] = [];
@@ -913,6 +915,7 @@
   GenericForm.propTypes = {
     id: PropTypes.string,
     FieldComponent: PropTypes.elementType,
+    outputEmptyFields: PropTypes["boolean"],
     onError: PropTypes.func,
     onSubmit: PropTypes.func,
     children: PropTypes.node,
