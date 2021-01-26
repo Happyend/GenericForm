@@ -157,7 +157,7 @@ class GenericFormField extends React.Component {
     };
 
     if (_extraTypes[type]) {
-      return _extraTypes[type].render(props, this.props, this.state)
+      return _extraTypes[type].render(props, this.props, this.state, this.validateOnChange.bind(this))
     }
 
     switch (type) {
@@ -220,6 +220,11 @@ class GenericFormField extends React.Component {
   }
 
   onChange(e) {
+    this.validateOnChange(e);
+    if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
+  }
+
+  validateOnChange(e) {
     const stateUpdate = {};
     if (isRadioOrCheckbox(this.props)) {
       stateUpdate.checked = !this.state.checked;
@@ -246,7 +251,6 @@ class GenericFormField extends React.Component {
         this.handleDisabledUntilValid();
       }
     );
-    if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
   }
 
   setOtherRadiosChecked(checked) {

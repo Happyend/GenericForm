@@ -209,9 +209,9 @@ A string to identify the new GenericFormField type
 
 An object that has two methods, render and getValue:
 
-##### render(libraryProps, componentProps, libraryState)
+##### render(libraryProps, componentProps, libraryState, validateOnChange)
 
-The render method should return the custom component.
+The render method should return the custom component. The validateOnChange method can be called to customize the component onChange callback.
 
 ##### getValue
 
@@ -224,12 +224,17 @@ the react-text-mask plugin.
 
 ```
 GenericFormField.registerExtraType('mask', {
-  render(sharedProps, { mask }) {
+  render(sharedProps, { mask, onChange }, state, validateOnChange) {
 
     return <TextMask
       { ...sharedProps }
       mask={ mask }
       guide={ false }
+      onChange={(e) => {
+        // by default sharedProps pass in onChange method that does validation, but this can be overriden while keeping validation by using the validateOnChange method
+        validateOnChange(e);
+        if (typeof onChange === 'function') onChange(e);
+      }}
       type='text'/>;
 
   },

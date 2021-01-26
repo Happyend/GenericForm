@@ -387,7 +387,7 @@
         });
 
         if (_extraTypes[type]) {
-          return _extraTypes[type].render(props, this.props, this.state);
+          return _extraTypes[type].render(props, this.props, this.state, this.validateOnChange.bind(this));
         }
 
         switch (type) {
@@ -449,6 +449,12 @@
     }, {
       key: "onChange",
       value: function onChange(e) {
+        this.validateOnChange(e);
+        if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
+      }
+    }, {
+      key: "validateOnChange",
+      value: function validateOnChange(e) {
         var _this2 = this;
 
         var stateUpdate = {};
@@ -474,7 +480,6 @@
 
           _this2.handleDisabledUntilValid();
         });
-        if (typeof this.props.onChange === 'function') this.props.onChange(e, this.getValue());
       }
     }, {
       key: "setOtherRadiosChecked",
