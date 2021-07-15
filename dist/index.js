@@ -344,7 +344,7 @@
         }, React.createElement(GenericFormFieldLabel, _extends({}, this.props, {
           requiredSuffix: this.props.requiredLabelSuffix || _requiredLabelSuffix,
           value: this.state.value
-        })), this.renderGenericFormField(), this.renderError(), this.props.after);
+        })), this.props.before, this.renderGenericFormField(), this.renderError(), this.props.after);
       }
     }, {
       key: "renderRequiredSuffix",
@@ -790,6 +790,7 @@
     validateOnBlur: PropTypes.bool
   };
   var GenericFormFieldShape = {
+    before: PropTypes.node,
     checked: PropTypes.bool,
     className: PropTypes.string,
     id: PropTypes.string,
