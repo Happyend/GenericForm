@@ -106,10 +106,10 @@ class GenericFormField extends React.Component {
         requiredSuffix={this.props.requiredLabelSuffix || _requiredLabelSuffix}
         value={this.state.value}
       />
-      {this.props.before}
+      {typeof this.props.before === 'function' ? this.props.before(this.state.value) : this.props.before }
       {this.renderGenericFormField()}
       {this.renderError()}
-      {this.props.after}
+      {typeof this.props.after === 'function' ? this.props.after(this.state.value) : this.props.after }
     </div>;
   }
 
@@ -529,7 +529,7 @@ const validationShape = {
 };
 
 export const GenericFormFieldShape = {
-  before: PropTypes.node,
+  before: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   checked: PropTypes.bool,
   className: PropTypes.string,
   id: PropTypes.string,
