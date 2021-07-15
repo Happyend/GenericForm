@@ -201,6 +201,7 @@
 
   var GenericFormFieldTypes = {
     CHECKBOX: 'checkbox',
+    COLOR: 'color',
     EMAIL: 'email',
     HIDDEN: 'hidden',
     NUMBER: 'number',
@@ -417,6 +418,7 @@
           case GenericFormFieldTypes.TEXTAREA:
             return React.createElement("textarea", props);
 
+          case GenericFormFieldTypes.COLOR:
           case GenericFormFieldTypes.NUMBER:
           case GenericFormFieldTypes.TEL:
           case GenericFormFieldTypes.TEXT:
