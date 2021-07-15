@@ -188,6 +188,7 @@ class GenericFormField extends React.Component {
         </select>;
       case GenericFormFieldTypes.TEXTAREA:
         return <textarea {...props} />;
+      case GenericFormFieldTypes.COLOR:
       case GenericFormFieldTypes.NUMBER:
       case GenericFormFieldTypes.TEL:
       case GenericFormFieldTypes.TEXT:

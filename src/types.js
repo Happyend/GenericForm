@@ -1,5 +1,6 @@
 export const GenericFormFieldTypes = {
     CHECKBOX: 'checkbox',
+    COLOR: 'color',
     EMAIL: 'email',
     HIDDEN: 'hidden',
     NUMBER: 'number',
