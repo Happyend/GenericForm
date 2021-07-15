@@ -529,7 +529,7 @@ const validationShape = {
 };
 
 export const GenericFormFieldShape = {
-  before: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  before: PropTypes.any,
   checked: PropTypes.bool,
   className: PropTypes.string,
   id: PropTypes.string,
@@ -545,7 +545,7 @@ export const GenericFormFieldShape = {
   value: PropTypes.any,
   defaultEmptyValue: PropTypes.any,
   labelAsDefault: PropTypes.bool,
-  after: PropTypes.node,
+  after: PropTypes.any,
   disableUntilValid: PropTypes.bool,
   requiredLabelSuffix: PropTypes.string,
 };
