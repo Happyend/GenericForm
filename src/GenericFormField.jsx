@@ -131,6 +131,7 @@ class GenericFormField extends React.Component {
       defaultValue,
       checked,
       type,
+      before,
       after,
       validation,
       formId,

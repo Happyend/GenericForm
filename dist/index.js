@@ -366,6 +366,7 @@
             defaultValue = _this$props.defaultValue,
             checked = _this$props.checked,
             type = _this$props.type,
+            before = _this$props.before,
             after = _this$props.after,
             validation = _this$props.validation,
             formId = _this$props.formId,
@@ -373,7 +374,7 @@
             disableUntilValid = _this$props.disableUntilValid,
             disabled = _this$props.disabled,
             requiredLabelSuffix = _this$props.requiredLabelSuffix,
-            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "after", "validation", "formId", "fieldType", "disableUntilValid", "disabled", "requiredLabelSuffix"]);
+            nativeProps = _objectWithoutProperties(_this$props, ["dataType", "label", "labelAsDefault", "options", "className", "error", "value", "defaultValue", "checked", "type", "before", "after", "validation", "formId", "fieldType", "disableUntilValid", "disabled", "requiredLabelSuffix"]);
 
         var props = _objectSpread2({}, nativeProps, {
           value: this.state.value,
