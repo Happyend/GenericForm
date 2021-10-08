@@ -268,6 +268,13 @@ You can override this value for any input by using the requiredLabelSuffix props
 
 You can give the GenericForm a FieldComponent prop that will be used when giving the GenericForm an array of fields
 
+## Changing default error message
+
+```
+import {setErrors } from 'generic-form';
+
+setErrors({ mandatory: 'My error' });
+```
 ## Scripts
 
 ### Running the example form

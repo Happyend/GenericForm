@@ -14,7 +14,6 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "parcel-bundler": "^1.12.4",
-    "prop-types": "^15.6.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "rollup": "^1.1.2",

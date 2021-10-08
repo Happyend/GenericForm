@@ -1,11 +1,10 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('prop-types')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'react', 'prop-types'], factory) :
-  (global = global || self, factory(global.GenericForm = {}, global.React, global.PropTypes));
-}(this, (function (exports, React, PropTypes) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'react'], factory) :
+  (global = global || self, factory(global.GenericForm = {}, global.React));
+}(this, (function (exports, React) { 'use strict';
 
   React = React && React.hasOwnProperty('default') ? React['default'] : React;
-  PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -227,6 +226,12 @@
   var isRadioOrCheckbox = function isRadioOrCheckbox(_ref) {
     var type = _ref.type;
     return type === GenericFormFieldTypes.CHECKBOX || type === GenericFormFieldTypes.RADIO;
+  };
+  var errors = {
+    mandatory: 'This field is mandatory'
+  };
+  var setErrors = function setErrors(_errors) {
+    errors = _objectSpread2({}, errors, {}, _errors);
   };
 
   var GenericFormFieldLabel = function GenericFormFieldLabel(_ref) {
@@ -563,7 +568,7 @@
             var isEmpty = !hasValue(value);
 
             if (isEmpty) {
-              return this.props.validation.errorEmpty || 'This field is mandatory';
+              return this.props.validation.errorEmpty || errors.mandatory;
             }
           }
 
@@ -780,40 +785,6 @@
     return GenericFormField;
   }(React.Component);
 
-  var validationShape = {
-    mandatory: PropTypes.bool,
-    negativeRegex: PropTypes.object,
-    positiveRegex: PropTypes.object,
-    errorEmpty: PropTypes.string,
-    group: PropTypes.string,
-    groupMin: PropTypes.number,
-    errorGroup: PropTypes.string,
-    validateOnBlur: PropTypes.bool
-  };
-  var GenericFormFieldShape = {
-    before: PropTypes.any,
-    checked: PropTypes.bool,
-    className: PropTypes.string,
-    id: PropTypes.string,
-    maxLength: PropTypes.number,
-    label: PropTypes.node,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    onBlur: PropTypes.func,
-    onFocus: PropTypes.func,
-    type: PropTypes.string,
-    dataType: PropTypes.string,
-    validation: PropTypes.shape(validationShape),
-    value: PropTypes.any,
-    defaultEmptyValue: PropTypes.any,
-    labelAsDefault: PropTypes.bool,
-    after: PropTypes.any,
-    disableUntilValid: PropTypes.bool,
-    requiredLabelSuffix: PropTypes.string
-  };
-  GenericFormFieldLabel.propTypes = GenericFormFieldShape;
-  GenericFormField.propTypes = GenericFormFieldShape;
-
   var GenericForm =
   /*#__PURE__*/
   function (_React$Component) {
@@ -921,16 +892,6 @@
     return GenericForm;
   }(React.Component);
 
-  GenericForm.propTypes = {
-    id: PropTypes.string,
-    FieldComponent: PropTypes.elementType,
-    outputEmptyFields: PropTypes.bool,
-    onError: PropTypes.func,
-    onSubmit: PropTypes.func,
-    children: PropTypes.node,
-    className: PropTypes.string
-  };
-
   var GenericFormFields = function GenericFormFields(_ref) {
     var fields = _ref.fields,
         formId = _ref.formId,
@@ -950,6 +911,7 @@
   exports.GenericFormFieldTypes = GenericFormFieldTypes;
   exports.GenericFormFields = GenericFormFields;
   exports.default = GenericForm;
+  exports.setErrors = setErrors;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 

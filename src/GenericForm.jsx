@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import GenericFormField from './GenericFormField';
 import {isRadioOrCheckbox} from './helpers';
 
@@ -82,15 +81,5 @@ class GenericForm extends React.Component {
   }
 
 }
-
-GenericForm.propTypes = {
-  id: PropTypes.string,
-  FieldComponent: PropTypes.elementType,
-  outputEmptyFields: PropTypes.bool,
-  onError: PropTypes.func,
-  onSubmit: PropTypes.func,
-  children: PropTypes.node,
-  className: PropTypes.string,
-};
 
 export default GenericForm;

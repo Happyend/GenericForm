@@ -11,3 +11,11 @@ export const regexMatches = (val, regex) =>
 
 export const isRadioOrCheckbox = ({ type }) =>
     type === GenericFormFieldTypes.CHECKBOX || type === GenericFormFieldTypes.RADIO;
+
+export let errors = {
+  mandatory: 'This field is mandatory'
+}
+
+export const setErrors = (_errors) => {
+  errors = {...errors, ..._errors};
+}

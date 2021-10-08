@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {hasValue, regexMatches, isRadioOrCheckbox} from './helpers';
+import {hasValue, regexMatches, isRadioOrCheckbox, errors} from './helpers';
 import GenericFormFieldLabel from './GenericFormFieldLabel';
 import {GenericFormFieldTypes, GenericFormFieldDataTypes} from './types';
 
@@ -324,7 +323,7 @@ class GenericFormField extends React.Component {
 
         const isEmpty = !hasValue(value);
         if (isEmpty) {
-          return this.props.validation.errorEmpty || 'This field is mandatory';
+          return this.props.validation.errorEmpty || errors.mandatory;
         }
       }
 
@@ -518,41 +517,6 @@ class GenericFormField extends React.Component {
 
 }
 
-const validationShape = {
-  mandatory: PropTypes.bool,
-  negativeRegex: PropTypes.object,
-  positiveRegex: PropTypes.object,
-  errorEmpty: PropTypes.string,
-  group: PropTypes.string,
-  groupMin: PropTypes.number,
-  errorGroup: PropTypes.string,
-  validateOnBlur: PropTypes.bool
-};
-
-export const GenericFormFieldShape = {
-  before: PropTypes.any,
-  checked: PropTypes.bool,
-  className: PropTypes.string,
-  id: PropTypes.string,
-  maxLength: PropTypes.number,
-  label: PropTypes.node,
-  name: PropTypes.string,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
-  onFocus: PropTypes.func,
-  type: PropTypes.string,
-  dataType: PropTypes.string,
-  validation: PropTypes.shape(validationShape),
-  value: PropTypes.any,
-  defaultEmptyValue: PropTypes.any,
-  labelAsDefault: PropTypes.bool,
-  after: PropTypes.any,
-  disableUntilValid: PropTypes.bool,
-  requiredLabelSuffix: PropTypes.string,
-};
-
-GenericFormFieldLabel.propTypes = GenericFormFieldShape;
-GenericFormField.propTypes = GenericFormFieldShape;
 
 
 export default GenericFormField;

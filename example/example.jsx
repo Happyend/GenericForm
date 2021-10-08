@@ -1,8 +1,10 @@
 import React from 'react';
 import {render} from 'react-dom';
-import GenericForm, {GenericFormFieldDataTypes, GenericFormFieldTypes} from '../src/index';
+import GenericForm, {GenericFormFieldDataTypes, GenericFormFieldTypes, setErrors } from '../src/index';
 import GenericFormField from '../src/GenericFormField';
 
+
+setErrors({ mandatory: 'Toto'})
 class App extends React.Component {
 
 
@@ -28,7 +30,7 @@ class App extends React.Component {
                        name: 'firstname',
                        id: 'test-firstname-field',
                        label: 'Firstname',
-                       requiredLabelSuffix: 'This field is mandatory',
+                       requiredLabelSuffix: ' This field is mandatory',
                        validation: {
                          mandatory: true,
                          validateOnBlur: false,
