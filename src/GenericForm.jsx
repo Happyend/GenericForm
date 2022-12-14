@@ -1,6 +1,6 @@
 import React from 'react';
 import GenericFormField from './GenericFormField';
-import {isRadioOrCheckbox} from './helpers';
+import {defaultFormMethod, isRadioOrCheckbox} from './helpers';
 
 class GenericForm extends React.Component {
 
@@ -12,6 +12,7 @@ class GenericForm extends React.Component {
 
   render() {
     return <form id={this.props.id} onSubmit={this._onSubmit}
+                 method={this.props.method || defaultFormMethod}
                  className={'generic-form ' + (this.props.className ? this.props.className : '')}>
       {this.content()}
       {this.props.children}

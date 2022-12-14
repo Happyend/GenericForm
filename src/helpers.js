@@ -19,3 +19,6 @@ export let errors = {
 export const setErrors = (_errors) => {
   errors = {...errors, ..._errors};
 }
+
+export let defaultFormMethod = 'POST';
+export const setDefaultFormMethod = (v) => defaultFormMethod = v;

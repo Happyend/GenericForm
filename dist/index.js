@@ -233,6 +233,10 @@
   var setErrors = function setErrors(_errors) {
     errors = _objectSpread2({}, errors, {}, _errors);
   };
+  var defaultFormMethod = 'POST';
+  var setDefaultFormMethod = function setDefaultFormMethod(v) {
+    return defaultFormMethod = v;
+  };
 
   var GenericFormFieldLabel = function GenericFormFieldLabel(_ref) {
     var id = _ref.id,
@@ -807,6 +811,7 @@
         return React.createElement("form", {
           id: this.props.id,
           onSubmit: this._onSubmit,
+          method: this.props.method || defaultFormMethod,
           className: 'generic-form ' + (this.props.className ? this.props.className : '')
         }, this.content(), this.props.children);
       }
@@ -911,6 +916,7 @@
   exports.GenericFormFieldTypes = GenericFormFieldTypes;
   exports.GenericFormFields = GenericFormFields;
   exports.default = GenericForm;
+  exports.setDefaultFormMethod = setDefaultFormMethod;
   exports.setErrors = setErrors;
 
   Object.defineProperty(exports, '__esModule', { value: true });
