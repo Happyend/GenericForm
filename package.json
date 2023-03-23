@@ -21,8 +21,8 @@
     "rollup-plugin-node-resolve": "^4.0.0"
   },
   "peerDepedencies": {
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react": ">=16.0.0",
+    "react-dom": ">=16.0.0"
   },
   "repository": {
     "type": "git",
